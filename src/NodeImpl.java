@@ -15,6 +15,7 @@ public class NodeImpl implements Node{
     public String successor;
     public int m =31;
     ReentrantLock lock = new ReentrantLock();
+    public int counter=0;
 
     public NodeImpl(String nodeURL, int id){
         this.id = id;
@@ -39,6 +40,8 @@ public class NodeImpl implements Node{
         lock.lock();
         try {
             if (nodeURL!=null){
+                counter++;
+
                 initFingerTable(nodeURL);
                 updateOthers();
                 //move keys in (predecessor,n] from successor
