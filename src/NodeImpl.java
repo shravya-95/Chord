@@ -1,3 +1,6 @@
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -50,7 +53,6 @@ public class NodeImpl implements Node{
 
     }
 
-    @Override
     public boolean joinFinished(String nodeURL) throws RemoteException {
         try{
             lock.unlock();
@@ -63,102 +65,114 @@ public class NodeImpl implements Node{
 
     }
 
-    @Override
     public boolean insert(String word, String definition) throws RemoteException {
         return false;
     }
 
-    @Override
     public String lookup(String word) throws RemoteException {
         return null;
     }
 
-    @Override
     public String printFingerTable() throws RemoteException {
         return finger.toString();
     }
 
-    @Override
     public String printDictionary() throws RemoteException {
         return null;
     }
 
-    private void updateOthers() throws RemoteException {
+    @Override
+    public void setPredecessor(String nodeUrl) throws RemoteException {
+
+    }
+
+    @Override
+    public void setSuccessor(String nodeUrl) throws RemoteException {
+
+    }
+
+    private void updateOthers() throws RemoteException, MalformedURLException, NotBoundException {
 
 
         for (int i=0;i<m;i++){
             String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
-            //Add RMI object p from pURL
+            Node p = (Node) Naming.lookup(pURL);
             p.updateFingerTable(this.nodeUrl,i);
         }
 
     }
 
-    private void updateFingerTable(String nodeURL, int i) {
-        //Add RMI object node from nodeURL
+    public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
+        Node node = (Node) Naming.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
-        //Add RMI object fingerIdNode from fingerIdUrl
+        Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
         id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
         if (id>= finger.get(i).start && id<fingerId){
             finger.get(i).node=nodeURL;
             String pUrl = predecessor;
-            //Add RMI object p from pUrl
-            p.updateFingerTable(node,i);
+            Node p = (Node) Naming.lookup(pUrl);
+            p.updateFingerTable(nodeURL,i);
         }
     }
 
-    private void initFingerTable(String nodeURL) throws RemoteException {
-        //Add RMI object node from nodeURL
+    private void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
+        Node node = (Node) Naming.lookup(nodeURL);
         finger.get(0).node = node.findSuccessor(finger.get(0).start, false);
-        // Add RMI object nodeSuccessor from this.sucessor
+        Node nodeSuccessor = (Node) Naming.lookup(this.successor);
         this.predecessor=nodeSuccessor.predecessor();
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =0;i<m-1;i++){
-            //Add RMI object fingerNodei from finger.get(i).node
+            Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
             if(finger.get(i+1).start>this.id && finger.get(i+1).start<=fingerNodei.getNodeId()){
                 finger.get(i+1).node=finger.get(i).node;
             }
             else {
-                //Add RMI object fingerNodeiPlusOne from finger.get(i+1).node
-                finger.get(i+1).node=node.findSuccessor(fingerNodeiPlusOne.getNodeid(),false);
+                Node fingerNodeiPlusOne = (Node) Naming.lookup(finger.get(i+1).node);
+                finger.get(i+1).node=node.findSuccessor(fingerNodeiPlusOne.getNodeId(),false);
             }
         }
     }
 
-    public String findSuccessor (int key, boolean traceFlag) throws RemoteException{
+    public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
         String node = findPredecessor(key);
         return node;
 
     }
-    public String  findPredecessor (int key) throws RemoteException{
+    public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
         //Add RMI objects node from nodeURL and
+        Node node = (Node) Naming.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
+        Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
         while (key<node.getNodeId() && key>nodeSuccessor.getNodeId()){
             nodeURL = node.closestPrecedingFinger(key);
             //Add RMI object node from nodeURL (update below)
-            node = //RMI Object??;
+            node = (Node) Naming.lookup(nodeURL);
         }
-        return node;
+        return nodeURL;
     }
-    public String  closestPrecedingFinger (int key) throws RemoteException{
+
+    public int getNodeId(String nodeURL) throws RemoteException {
+        return 0;
+    }
+
+    public String  closestPrecedingFinger (int key) throws RemoteException, MalformedURLException, NotBoundException {
         for (int i =0;i<m;i++){
             //Add RMI object fingerNodei from finger.get(i).node
+            Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
             if(fingerNodei.getNodeId()>this.id && fingerNodei.getNodeId()<key )
                 return finger.get(i).node;
         }
         return this.nodeUrl;
     }
 
-    @Override
     public String successor() throws RemoteException {
         return this.successor;
     }
 
-    @Override
     public String predecessor() throws RemoteException {
         return this.predecessor;
     }
