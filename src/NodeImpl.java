@@ -14,8 +14,9 @@ public class NodeImpl implements Node{
     public String predecessor;
     public String successor;
     public int m =31;
-    ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock lock = new ReentrantLock();
     public int counter=0;
+    public ReentrantLock counterLock =  new ReentrantLock();
 
     public NodeImpl(String nodeURL, int id){
         this.id = id;
@@ -40,7 +41,6 @@ public class NodeImpl implements Node{
         lock.lock();
         try {
             if (nodeURL!=null){
-                counter++;
 
                 initFingerTable(nodeURL);
                 updateOthers();
@@ -54,6 +54,15 @@ public class NodeImpl implements Node{
             return true;
         }
 
+    }
+    public int getCounter() throws RemoteException{
+        counterLock.lock();
+        try {
+            this.counter++;
+            return this.counter;
+        }finally {
+            counterLock.unlock();
+        }
     }
 
     public boolean joinFinished(String nodeURL) throws RemoteException {

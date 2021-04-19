@@ -19,6 +19,7 @@ public interface Node extends Remote {
     public String  printDictionary() throws RemoteException;
     public void setPredecessor(String nodeUrl) throws RemoteException;
     public void setSuccessor(String nodeUrl) throws RemoteException;
+    public int getCounter() throws RemoteException;
 
     public void updateFingerTable(String nodeUrl, int i) throws RemoteException, NotBoundException, MalformedURLException;
 }
