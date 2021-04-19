@@ -7,11 +7,11 @@ import java.rmi.RemoteException;
 
 public class Client{
     public static void main(String[] args) throws Exception{
-        if ( args.length != 2 ) {
+        if ( args.length != 1 ) {
             throw new RuntimeException( "Syntax: java Client someChordNodeURL \n URL should be sent in the form alpha.umn.edu:1099 where 1099 is the port" );
         }
         System.setSecurityManager (new SecurityManager ());
-        Node node = (Node) Naming.lookup ("//" + args[0] +"/node00");
+        Node node = (Node) Naming.lookup ("//" + args[0]);
 
         System.out.println("Enter 1 to lookup, 2 to exit");
         Scanner in = new Scanner(System.in);
