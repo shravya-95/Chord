@@ -20,7 +20,7 @@ public class DictionaryLoader {
         while((line = br.readLine())!=null){
             String[] wordMeaning = line.split(" ");
             int wordHash = FNV1aHash.hash32(wordMeaning[0]);
-            String wordNodeUrl = node.findSuccessor(wordHash, false);
+            String wordNodeUrl = node.findSuccessor(wordHash, false); //check
             Node wordNode = (Node) Naming.lookup(wordNodeUrl);
             wordNode.insert(wordMeaning[0], wordMeaning[1]); //needs to overwrite if same key
         }
