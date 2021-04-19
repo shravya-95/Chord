@@ -91,8 +91,8 @@ public class NodeImpl implements Node{
         //Add RMI object node from nodeURL
         String fingerIdUrl = finger.get(i).node;
         //Add RMI object fingerIdNode from fingerIdUrl
-        id = node.getNodeId(nodeURL);
-        int fingerId = fingerIdNode.getNodeId(fingerIdUrl);
+        id = node.getNodeId();
+        int fingerId = fingerIdNode.getNodeId();
         if (id>= finger.get(i).start && id<fingerId){
             finger.get(i).node=nodeURL;
             String pUrl = predecessor;
@@ -109,11 +109,13 @@ public class NodeImpl implements Node{
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =0;i<m-1;i++){
-            if(finger.get(i+1).start>this.id && finger.get(i+1).start<=finger.get(i).node.id){
+            //Add RMI object fingerNodei from finger.get(i).node
+            if(finger.get(i+1).start>this.id && finger.get(i+1).start<=fingerNodei.getNodeId()){
                 finger.get(i+1).node=finger.get(i).node;
             }
             else {
-                finger.get(i+1).node=node.findSuccessor(finger.get(i+1).node.id,false);
+                //Add RMI object fingerNodeiPlusOne from finger.get(i+1).node
+                finger.get(i+1).node=node.findSuccessor(fingerNodeiPlusOne.getNodeid(),false);
             }
         }
     }
@@ -126,17 +128,19 @@ public class NodeImpl implements Node{
     public String  findPredecessor (int key) throws RemoteException{
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
-        //Add RMI objects for nodeURL and nodeSuccessorURL
-        while (key<node.getNodeID(nodeURL) && key>nodeSuccessor.getNodeID(nodeSuccessorURL)){
+        //Add RMI objects node from nodeURL and
+        // Add RMI object nodeSuccessor from nodeSuccessorURL
+        while (key<node.getNodeId() && key>nodeSuccessor.getNodeId()){
             nodeURL = node.closestPrecedingFinger(key);
-            //Add RMI object for nodeURL above
+            //Add RMI object node from nodeURL (update below)
             node = //RMI Object??;
         }
         return node;
     }
     public String  closestPrecedingFinger (int key) throws RemoteException{
         for (int i =0;i<m;i++){
-            if(finger.get(i).node.id>this.id && finger.get(i).node.id<key )
+            //Add RMI object fingerNodei from finger.get(i).node
+            if(fingerNodei.getNodeId()>this.id && fingerNodei.getNodeId()<key )
                 return finger.get(i).node;
         }
         return this.nodeUrl;
@@ -152,7 +156,7 @@ public class NodeImpl implements Node{
         return this.predecessor;
     }
 
-    public int getNodeID(String nodeURL) throws RemoteException{
+    public int getNodeId() throws RemoteException{
         return this.id;
     }
 
