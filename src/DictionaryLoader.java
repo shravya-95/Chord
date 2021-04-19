@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,4 +25,7 @@ public class DictionaryLoader {
             wordNode.insert(wordMeaning[0], wordMeaning[1]); //needs to overwrite if same key
         }
     }
+=======
+public class DictionaryLoader {
+>>>>>>> a47ee348356104fe275da608312de5ce1925b717
 }
