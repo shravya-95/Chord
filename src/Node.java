@@ -23,6 +23,13 @@ public class Node {
         }
     }
 
+    private int modOf31(int num){
+        if (num>=0)
+            return (num%(int)Math.pow(2,31));
+        else
+            return (num%(int)Math.pow(2,31)+(int)Math.pow(2,31));
+    }
+
     public boolean join (Node nodeURL) throws RemoteException{
 
         if (nodeURL!=null){
@@ -31,15 +38,24 @@ public class Node {
             //move keys in (predecessor,n] from successor
         }
         else{
-            for(int i = 0; i<m;i++){
-                finger.get(i).node = this;
-            }
             predecessor = this;
         }
         return true;
     }
 
-    private void updateOthers() {
+    private void updateOthers() throws RemoteException {
+        Node p;
+        for (int i=0;i<m;i++){
+            p = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
+            p.updateFingerTable(this,i);
+        }
+
+    }
+
+    private void updateFingerTable(Node node, int i) {
+        if (node.id>= finger.get(i).start && node.id<finger.get(i).node.id){
+            finger.get(i).node
+        }
     }
 
     private void initFingerTable(Node nodeURL) throws RemoteException {
@@ -54,13 +70,26 @@ public class Node {
                 finger.get(i+1).node=nodeURL.findSuccessor(finger.get(i+1).node.id,false);
             }
         }
-
     }
 
     public Node findSuccessor (int key, boolean traceFlag) throws RemoteException{
-        node = 
+        Node node = findPredecessor(key);
+        return node.successor;
 
+    }
+    public Node  findPredecessor (int key) throws RemoteException{
+        Node node = this;
+        while (key<node.id && key>node.successor.id){
+            node = node.closestPrecedingFinger(key);
+        }
         return node;
+    }
+    public Node  closestPrecedingFinger (int key) throws RemoteException{
+        for (int i =0;i<m;i++){
+            if(finger.get(i).node.id>this.id && finger.get(i).node.id<key )
+                return finger.get(i).node;
+        }
+        return this;
     }
 
 }
