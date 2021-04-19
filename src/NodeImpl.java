@@ -71,7 +71,7 @@ public class NodeImpl implements Node{
     private void updateOthers() throws RemoteException {
         NodeImpl p;
         for (int i=0;i<m;i++){
-            p = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
+            p = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
             p.updateFingerTable(this,i);
         }
 
@@ -79,6 +79,9 @@ public class NodeImpl implements Node{
 
     private void updateFingerTable(NodeImpl node, int i) {
         if (node.id>= finger.get(i).start && node.id<finger.get(i).node.id){
+            finger.get(i).node=node;
+            NodeImpl p = predecessor;
+            p.updateFingerTable(node,i);
         }
     }
 
@@ -124,6 +127,9 @@ public class NodeImpl implements Node{
     @Override
     public NodeImpl predecessor() throws RemoteException {
         return null;
+    }
+    public static void main(args[] args){
+        
     }
 
 }
