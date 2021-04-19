@@ -50,28 +50,23 @@ public class NodeImpl implements Node{
 
     }
 
-    @Override
     public boolean joinFinished(String nodeURL) throws RemoteException {
         lock.unlock();
         return true;
     }
 
-    @Override
     public boolean insert(String word, String definition) throws RemoteException {
         return false;
     }
 
-    @Override
     public String lookup(String word) throws RemoteException {
         return null;
     }
 
-    @Override
     public String printFingerTable() throws RemoteException {
         return finger.toString();
     }
 
-    @Override
     public String printDictionary() throws RemoteException {
         return null;
     }
@@ -134,6 +129,11 @@ public class NodeImpl implements Node{
         }
         return node;
     }
+
+    public int getNodeId(String nodeURL) throws RemoteException {
+        return 0;
+    }
+
     public String  closestPrecedingFinger (int key) throws RemoteException{
         for (int i =0;i<m;i++){
             if(finger.get(i).node.id>this.id && finger.get(i).node.id<key )
@@ -142,12 +142,10 @@ public class NodeImpl implements Node{
         return this.nodeUrl;
     }
 
-    @Override
     public String successor() throws RemoteException {
         return this.successor;
     }
 
-    @Override
     public String predecessor() throws RemoteException {
         return this.predecessor;
     }
