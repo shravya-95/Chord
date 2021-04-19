@@ -54,7 +54,6 @@ public class Node {
 
     private void updateFingerTable(Node node, int i) {
         if (node.id>= finger.get(i).start && node.id<finger.get(i).node.id){
-            finger.get(i).node
         }
     }
 
