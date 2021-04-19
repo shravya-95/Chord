@@ -45,15 +45,22 @@ public class NodeImpl implements Node{
             }
             return true;
         }finally {
-            //What do I do here?
+            return true;
         }
 
     }
 
     @Override
     public boolean joinFinished(String nodeURL) throws RemoteException {
-        lock.unlock();
-        return true;
+        try{
+            lock.unlock();
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @Override
