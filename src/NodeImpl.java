@@ -2,14 +2,16 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class NodeImpl implements Node{
     public List<Finger> finger = new ArrayList<>();
     public int id;
     public String nodeUrl;
-    public NodeImpl predecessor;
-    public NodeImpl successor;
+    public String predecessor;
+    public String successor;
     public int m =31;
+    ReentrantLock lock = new ReentrantLock();
 
     public NodeImpl(String nodeURL, int id){
         this.id = id;
@@ -30,22 +32,28 @@ public class NodeImpl implements Node{
             return (num%(int)Math.pow(2,31)+(int)Math.pow(2,31));
     }
 
-    public boolean join (NodeImpl nodeURL) throws RemoteException{
+    public boolean join (String nodeURL) throws RemoteException{
+        lock.lock();
+        try {
+            if (nodeURL!=null){
+                initFingerTable(nodeURL);
+                updateOthers();
+                //move keys in (predecessor,n] from successor
+            }
+            else{
+                predecessor = this;
+            }
+            return true;
+        }finally {
+            joinFinished(nodeURL);
+        }
 
-        if (nodeURL!=null){
-            initFingerTable(nodeURL);
-            updateOthers();
-            //move keys in (predecessor,n] from successor
-        }
-        else{
-            predecessor = this;
-        }
-        return true;
     }
 
     @Override
     public boolean joinFinished(String nodeURL) throws RemoteException {
-        return false;
+        lock.unlock();
+        return true;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class NodeImpl implements Node{
 
     @Override
     public String printFingerTable() throws RemoteException {
-        return null;
+        return finger.toString();
     }
 
     @Override
@@ -69,7 +77,7 @@ public class NodeImpl implements Node{
     }
 
     private void updateOthers() throws RemoteException {
-        NodeImpl p;
+        String p;
         for (int i=0;i<m;i++){
             p = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
             p.updateFingerTable(this,i);
@@ -77,15 +85,15 @@ public class NodeImpl implements Node{
 
     }
 
-    private void updateFingerTable(NodeImpl node, int i) {
+    private void updateFingerTable(String node, int i) {
         if (node.id>= finger.get(i).start && node.id<finger.get(i).node.id){
             finger.get(i).node=node;
-            NodeImpl p = predecessor;
+            String p = predecessor;
             p.updateFingerTable(node,i);
         }
     }
 
-    private void initFingerTable(NodeImpl nodeURL) throws RemoteException {
+    private void initFingerTable(String nodeURL) throws RemoteException {
         finger.get(0).node = nodeURL.findSuccessor(finger.get(0).start, false);
         this.predecessor=this.successor.predecessor;
         this.successor.predecessor=this;
@@ -99,19 +107,19 @@ public class NodeImpl implements Node{
         }
     }
 
-    public NodeImpl findSuccessor (int key, boolean traceFlag) throws RemoteException{
-        NodeImpl node = findPredecessor(key);
+    public String findSuccessor (int key, boolean traceFlag) throws RemoteException{
+        String node = findPredecessor(key);
         return node.successor;
 
     }
-    public NodeImpl  findPredecessor (int key) throws RemoteException{
-        NodeImpl node = this;
+    public String  findPredecessor (int key) throws RemoteException{
+        String node = this;
         while (key<node.id && key>node.successor.id){
             node = node.closestPrecedingFinger(key);
         }
         return node;
     }
-    public NodeImpl  closestPrecedingFinger (int key) throws RemoteException{
+    public String  closestPrecedingFinger (int key) throws RemoteException{
         for (int i =0;i<m;i++){
             if(finger.get(i).node.id>this.id && finger.get(i).node.id<key )
                 return finger.get(i).node;
@@ -120,16 +128,14 @@ public class NodeImpl implements Node{
     }
 
     @Override
-    public NodeImpl successor() throws RemoteException {
+    public String successor() throws RemoteException {
         return null;
     }
 
     @Override
-    public NodeImpl predecessor() throws RemoteException {
+    public String predecessor() throws RemoteException {
         return null;
     }
-    public static void main(args[] args){
-        
-    }
+
 
 }
