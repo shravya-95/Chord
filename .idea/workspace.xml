@@ -20,14 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c020d312-f25b-4d92-8b24-b4de1446ffeb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Chord.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DictionaryLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chord/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chord/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chord/NodeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/NodeImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Finger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Finger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NodeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.java" afterDir="false" />
     </list>
@@ -74,6 +69,15 @@
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">

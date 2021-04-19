@@ -5,6 +5,7 @@ public interface Node extends Remote {
 
     public String  findSuccessor (int key, boolean traceFlag) throws RemoteException;
     public String  findPredecessor (int key) throws RemoteException;
+    public int getNodeId(String nodeURL) throws RemoteException;
     public String  closestPrecedingFinger (int key) throws RemoteException;
     public String  successor () throws RemoteException;
     public String  predecessor  () throws RemoteException;

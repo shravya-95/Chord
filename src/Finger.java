@@ -1,8 +1,8 @@
 public class Finger {
-    public NodeImpl node;
+    public String node;
     public int start;
 
-    public Finger(NodeImpl nodeURL, int start){
+    public Finger(String nodeURL, int start){
         this.node = nodeURL;
         this.start=start;
     }
