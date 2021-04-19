@@ -15,4 +15,6 @@ public interface Node extends Remote {
     public String  lookup (String word) throws RemoteException;
     public String  printFingerTable() throws RemoteException;
     public String  printDictionary() throws RemoteException;
+    public void setPredecessor(String nodeUrl) throws RemoteException;
+    public void setSuccessor(String nodeUrl) throws RemoteException;
 }
