@@ -31,85 +31,79 @@ public class NodeImpl implements Node{
     }
 
     public boolean isInRange(int start, int end, int key){
-//        if (key>start){
-//            if (key<end)
-//                return true;
-//            else {
-//                if (start > end)
-//                    return true;
-//                else
-//                    return false;
-//            }
-//        }
-//        else if (key<start){
-//            if(start>end){
-//                if(key<end)
-//                    return true;
-//                else
-//                    return false;
-//            }
-//            else
-//                return false;
-//
-//        }
-//        return false;
         if (start<end){
-            if(key>start && key<end)
-                return true;
+            if(key>start && key<end){
+                System.out.println("1. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
+                return true;}
         }
         if (start>end){
-            if (key<start && key<end)
+            if (key<start && key<end){
+                System.out.println("2. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
                 return true;
-            if (key>start)
+            }
+
+
+            if (key>start){
+                System.out.println("3. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
                 return true;
+            }
         }
-        if (start==end && start!=key && end!=key)
+        if (start==end && start!=key)
             return true;
+        System.out.println("4. Inside isInRange"+start+"   "+end+"    "+key+" ---- False");
         return false;
 
     }
     public boolean isInRangeIncStart(int start, int end, int key){
-        if (start<end){
-            if(key>start && key<=end)
-                return true;
-        }
-        if (start>end){
-            if (key<start && key<=end)
-                return true;
-            if (key>start)
-                return true;
-        }
-        if (start==end && (end!=key))
-            return true;
-        return false;
+//        if (start<end){
+//            if(key>start && key<=end)
+//                return true;
+//        }
+//        if (start>end){
+//            if (key<start && key<=end)
+//                return true;
+//            if (key>start)
+//                return true;
+//        }
+//        if (start==end)
+//            return true;
+//        return false;
+        boolean ans = isInRange(start,end,key) || start==key;
+        System.out.println("Inside isInRangeIncStart"+start+"   "+end+"    "+key+" ----"+ans);
+        return ans;
 
     }
 
     public boolean isInRangeIncEnd(int start, int end, int key){
-        if (start<end){
-            if(key>start && key<end)
-                return true;
-        }
-        if (start>end){
-            if (key<start && key<end)
-                return true;
-            if (key>start)
-                return true;
-        }
-        if (start==end && start!=key)
-            return true;
-        return false;
+//        if (start<end){
+//            if(key>start && key<end)
+//                return true;
+//        }
+//        if (start>end){
+//            if (key<start && key<end)
+//                return true;
+//            if (key>start)
+//                return true;
+//        }
+//        if (start==end)
+//            return true;
+//        return false;
+        boolean ans = isInRange(start,end,key) || end==key;
+        System.out.println("Inside isInRangeIncEnd"+start+"   "+end+"    "+key+" ----"+ans);
+        return ans;
 
     }
 
 
     private void createFingerTable() {
-        for(int i=0;i<m;i++) {
-            finger.add(new Finger(this.nodeUrl, id + (int) Math.pow(2, i)));
+        finger.add(new Finger(null, -1));
+        for(int i=1;i<=m;i++) {
+            finger.add(new Finger(this.nodeUrl, modOf31(this.id + (int) Math.pow(2, i-1))));
         }
     }
 
     private int modOf31(int num){
+        //keys will go from 0 to 30
         if (num>=0)
             return (num%(int)Math.pow(2,31));
         else
@@ -176,8 +170,10 @@ public class NodeImpl implements Node{
         return null;
     }
 
-    public String printFingerTable() throws RemoteException {
-        return finger.toString();
+    public void printFingerTable() throws RemoteException {
+        for (Finger a:finger){
+            System.out.println("Finger start --- "+a.start+"---- Finger node"+a.node);
+        }
     }
 
     public String printDictionary() throws RemoteException {
@@ -186,20 +182,20 @@ public class NodeImpl implements Node{
 
     @Override
     public void setPredecessor(String nodeUrl) throws RemoteException {
-
+        this.predecessor = nodeUrl;
     }
 
     @Override
     public void setSuccessor(String nodeUrl) throws RemoteException {
-
+        this.successor=nodeUrl;
     }
 
     public void updateOthers() throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println(this.nodeUrl+" ------ updating others finger tables");
 
-        for (int i=0;i<m;i++){
-            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i) + 1) +"in updateOthers");
-            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
+        for (int i=1;i<=m;i++){
+            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
+            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
             p.updateFingerTable(this.nodeUrl,i);
         }
@@ -211,11 +207,13 @@ public class NodeImpl implements Node{
         Node node = (Node) Naming.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
         Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
-        id = node.getNodeId();
+        int s_id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
-        if (isInRangeIncStart(finger.get(i).start,fingerId,id)){
+        System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && this.id!=s_id){
             finger.get(i).node=nodeURL;
-            String pUrl = predecessor;
+            System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
+            String pUrl = this.predecessor;
             Node p = (Node) Naming.lookup(pUrl);
             p.updateFingerTable(nodeURL,i);
         }
@@ -227,13 +225,13 @@ public class NodeImpl implements Node{
         System.out.println("Running initFingerTable for node --- " + nodeURL);
         Node node0 = (Node) Naming.lookup(nodeURL);
         System.out.println("Node "+this.nodeUrl+" finger table size is "+finger.size());
-        finger.get(0).node = node0.findSuccessor(finger.get(0).start, false);
-        this.successor = finger.get(0).node;
+        finger.get(1).node = node0.findSuccessor(finger.get(1).start, false);
+        this.successor = finger.get(1).node;
         Node nodeSuccessor = (Node) Naming.lookup(this.successor);
         this.predecessor=nodeSuccessor.predecessor();
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
-        for(int i =0;i<m-1;i++){
+        for(int i =1;i<=m-1;i++){
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
             if (isInRangeIncEnd(id,fingerNodei.getNodeId(),finger.get(i+1).start)){
                 finger.get(i+1).node=finger.get(i).node;
@@ -262,11 +260,12 @@ public class NodeImpl implements Node{
         System.out.println("Running FINDPREDECESSOR in node " + this.nodeUrl+ "for key --- " + key);
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
-        System.out.println(this.successor);
+        System.out.println("successor"+this.successor);
         //Add RMI objects node from nodeURL and
         Node node = (Node) Naming.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
         Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
+        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
         while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
             //Add RMI object node from nodeURL (update below)
 
@@ -284,7 +283,7 @@ public class NodeImpl implements Node{
 
     public String  closestPrecedingFinger (int key) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Finding  closestPrecedingFinger in node ---"+this.nodeUrl+" for key --- "+key);
-        for (int i =m-1;i>=0;i--){
+        for (int i =m;i>0;i--){
             //Add RMI object fingerNodei from finger.get(i).node
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
             if(isInRange(this.id,key,fingerNodei.getNodeId())){
