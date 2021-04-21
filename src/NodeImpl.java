@@ -92,6 +92,7 @@ public class NodeImpl implements Node{
         System.out.println("Inside isInRangeIncEnd"+start+"   "+end+"    "+key+" ----"+ans);
         return ans;
 
+
     }
 
 
@@ -99,6 +100,7 @@ public class NodeImpl implements Node{
         finger.add(new Finger(null, -1));
         for(int i=1;i<=m;i++) {
             finger.add(new Finger(this.nodeUrl, modOf31(this.id + (int) Math.pow(2, i-1))));
+
         }
     }
 
@@ -142,7 +144,7 @@ public class NodeImpl implements Node{
     public int getCounter() throws RemoteException{
         counterLock.lock();
         try {
-            this.counter++;
+            this.counter++;//do we need to check m here?
             return this.counter;
         }finally {
             counterLock.unlock();
@@ -197,6 +199,7 @@ public class NodeImpl implements Node{
             System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
             String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
+
             p.updateFingerTable(this.nodeUrl,i);
         }
 
