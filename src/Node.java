@@ -22,4 +22,9 @@ public interface Node extends Remote {
     public int getCounter() throws RemoteException;
 
     public void updateFingerTable(String nodeUrl, int i) throws RemoteException, NotBoundException, MalformedURLException;
+
+    void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException;
+
+    void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
+
 }

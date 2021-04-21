@@ -30,9 +30,82 @@ public class NodeImpl implements Node{
         createFingerTable();
     }
 
+    public boolean isInRange(int start, int end, int key){
+//        if (key>start){
+//            if (key<end)
+//                return true;
+//            else {
+//                if (start > end)
+//                    return true;
+//                else
+//                    return false;
+//            }
+//        }
+//        else if (key<start){
+//            if(start>end){
+//                if(key<end)
+//                    return true;
+//                else
+//                    return false;
+//            }
+//            else
+//                return false;
+//
+//        }
+//        return false;
+        if (start<end){
+            if(key>start && key<end)
+                return true;
+        }
+        if (start>end){
+            if (key<start && key<end)
+                return true;
+            if (key>start)
+                return true;
+        }
+        if (start==end && start!=key && end!=key)
+            return true;
+        return false;
+
+    }
+    public boolean isInRangeIncStart(int start, int end, int key){
+        if (start<end){
+            if(key>start && key<=end)
+                return true;
+        }
+        if (start>end){
+            if (key<start && key<=end)
+                return true;
+            if (key>start)
+                return true;
+        }
+        if (start==end && (end!=key))
+            return true;
+        return false;
+
+    }
+
+    public boolean isInRangeIncEnd(int start, int end, int key){
+        if (start<end){
+            if(key>start && key<end)
+                return true;
+        }
+        if (start>end){
+            if (key<start && key<end)
+                return true;
+            if (key>start)
+                return true;
+        }
+        if (start==end && start!=key)
+            return true;
+        return false;
+
+    }
+
+
     private void createFingerTable() {
-        for(int i=0;i<m;i++){
-            finger.add(new Finger(this.nodeUrl, id+ (int) Math.pow(2,i) ));
+        for(int i=0;i<m;i++) {
+            finger.add(new Finger(this.nodeUrl, id + (int) Math.pow(2, i)));
         }
     }
 
@@ -47,7 +120,8 @@ public class NodeImpl implements Node{
         lock.lock();
         try {
             if (nodeURL!=null){
-                System.out.println("Not node-0, joining "+nodeURL+" to the DHT.......");
+                System.out.println("Not node-0, joining "+this.nodeUrl+" to the DHT.......");
+                //RMI object for node URL
                 initFingerTable(nodeURL);
                 updateOthers();
                 //move keys in (predecessor,n] from successor
@@ -55,12 +129,14 @@ public class NodeImpl implements Node{
             else{
                 System.out.println("Node-0 joining to the DHT.......");
                 predecessor = this.nodeUrl;
+                successor=this.nodeUrl;
             }
             System.out.println("Joined successfully!!!");
             return true;
 
         }catch (Exception e){
             System.out.println("Exception occured while joining....");
+            e.printStackTrace();
             lock.unlock();
             return false;
         }
@@ -118,10 +194,11 @@ public class NodeImpl implements Node{
 
     }
 
-    private void updateOthers() throws RemoteException, MalformedURLException, NotBoundException {
+    public void updateOthers() throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println(this.nodeUrl+" ------ updating others finger tables");
 
         for (int i=0;i<m;i++){
+            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i) + 1) +"in updateOthers");
             String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
             Node p = (Node) Naming.lookup(pURL);
             p.updateFingerTable(this.nodeUrl,i);
@@ -130,47 +207,51 @@ public class NodeImpl implements Node{
     }
 
     public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
-        System.out.println("Updating finger table for ---- "+ nodeURL);
+        System.out.println("Updating finger table for ---- "+ this.nodeUrl);
         Node node = (Node) Naming.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
         Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
         id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
-        if (id>= finger.get(i).start && id<fingerId){
+        if (isInRangeIncStart(finger.get(i).start,fingerId,id)){
             finger.get(i).node=nodeURL;
             String pUrl = predecessor;
             Node p = (Node) Naming.lookup(pUrl);
             p.updateFingerTable(nodeURL,i);
         }
-        System.out.println("Finished updating finger table for ---- "+ nodeURL + "in updateFingerTable");
+        System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
         printFingerTable();
     }
 
-    private void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
+    public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Running initFingerTable for node --- " + nodeURL);
-        Node node = (Node) Naming.lookup(nodeURL);
-        finger.get(0).node = node.findSuccessor(finger.get(0).start, false);
+        Node node0 = (Node) Naming.lookup(nodeURL);
+        System.out.println("Node "+this.nodeUrl+" finger table size is "+finger.size());
+        finger.get(0).node = node0.findSuccessor(finger.get(0).start, false);
+        this.successor = finger.get(0).node;
         Node nodeSuccessor = (Node) Naming.lookup(this.successor);
         this.predecessor=nodeSuccessor.predecessor();
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =0;i<m-1;i++){
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
-            if(finger.get(i+1).start>this.id && finger.get(i+1).start<=fingerNodei.getNodeId()){
+            if (isInRangeIncEnd(id,fingerNodei.getNodeId(),finger.get(i+1).start)){
                 finger.get(i+1).node=finger.get(i).node;
 
             }
             else {
+                System.out.println("finger.get(i+1).node is "+ finger.get(i+1).node);
                 Node fingerNodeiPlusOne = (Node) Naming.lookup(finger.get(i+1).node);
-                finger.get(i+1).node=node.findSuccessor(fingerNodeiPlusOne.getNodeId(),false);
+                finger.get(i+1).node=node0.findSuccessor(fingerNodeiPlusOne.getNodeId(),false);
             }
         }
-        System.out.println("Completed initfingerTable for "+nodeURL);
+        System.out.println("Completed initfingerTable for "+this.nodeUrl);
         printFingerTable();
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Running FINDSUCCESSOR for node key --- " + key);
+        System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + key +"from findsuccessor");
         String node = findPredecessor(key);
         System.out.println("The successor for ---"+ key+"--- is ---" + node);
 
@@ -178,17 +259,22 @@ public class NodeImpl implements Node{
 
     }
     public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
-        System.out.println("Running FINDPREDECESSOR for node key --- " + key);
+        System.out.println("Running FINDPREDECESSOR in node " + this.nodeUrl+ "for key --- " + key);
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
+        System.out.println(this.successor);
         //Add RMI objects node from nodeURL and
         Node node = (Node) Naming.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
         Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
-        while (key<node.getNodeId() && key>nodeSuccessor.getNodeId()){
-            nodeURL = node.closestPrecedingFinger(key);
+        while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
             //Add RMI object node from nodeURL (update below)
+
+            nodeURL = node.closestPrecedingFinger(key);
             node = (Node) Naming.lookup(nodeURL);
+
+            nodeSuccessorURL = node.successor();
+            nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
         }
         System.out.println("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
 
@@ -197,12 +283,16 @@ public class NodeImpl implements Node{
 
 
     public String  closestPrecedingFinger (int key) throws RemoteException, MalformedURLException, NotBoundException {
-        for (int i =0;i<m;i++){
+        System.out.println("Finding  closestPrecedingFinger in node ---"+this.nodeUrl+" for key --- "+key);
+        for (int i =m-1;i>=0;i--){
             //Add RMI object fingerNodei from finger.get(i).node
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
-            if(fingerNodei.getNodeId()>this.id && fingerNodei.getNodeId()<key )
+            if(isInRange(this.id,key,fingerNodei.getNodeId())){
+                System.out.println("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+finger.get(i).node);
                 return finger.get(i).node;
+            }
         }
+        System.out.println("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+this.nodeUrl);
         return this.nodeUrl;
     }
 
@@ -251,15 +341,24 @@ public class NodeImpl implements Node{
             Node node0 = (Node)registry.lookup("node0");
             nodeId = node0.getCounter();
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
-            NodeImpl newNode = new NodeImpl(nodeUrl, nodeId);
-            node0.join(nodeUrl);
+            System.out.println("This is not node-0 ---- "+ nodeUrl);
+            NodeImpl newNode = new NodeImpl("node"+nodeId, nodeId);
+            Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
+            registry.bind("node"+nodeId,nodeStub);
+            boolean res = newNode.join("node0");
+            if (res)
+                newNode.joinFinished("node0");
         } catch (NotBoundException e){
             //node0 not created
             nodeId =0;
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
-            NodeImpl newNode = new NodeImpl(nodeUrl,nodeId);
+            System.out.println("This is node-0 ---"+nodeUrl);
+            NodeImpl newNode = new NodeImpl("node0",nodeId);
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
             registry.bind("node"+nodeId,nodeStub);
+            boolean res = newNode.join(null);
+            if (res)
+                newNode.joinFinished("node0");
         }
     }
 
