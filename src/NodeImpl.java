@@ -250,15 +250,17 @@ public class NodeImpl implements Node{
         try{
             Node node0 = (Node)registry.lookup("node0");
             nodeId = node0.getCounter();
+            String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
+            NodeImpl newNode = new NodeImpl(nodeUrl, nodeId);
+            node0.join(nodeUrl);
         } catch (NotBoundException e){
             //node0 not created
             nodeId =0;
+            String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
+            NodeImpl newNode = new NodeImpl(nodeUrl,nodeId);
+            Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
+            registry.bind("node"+nodeId,nodeStub);
         }
-        String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
-        NodeImpl newNode = new NodeImpl(nodeUrl,nodeId);
-        Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
-//        Registry localRegistry = LocateRegistry.getRegistry( url,port);
-        registry.bind("node"+nodeId,nodeStub);
     }
 
 
