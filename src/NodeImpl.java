@@ -57,10 +57,10 @@ public class NodeImpl implements Node{
             if(key>start && key<end)
                 return true;
         }
-        if (start>end){
-            if (key<start && key<end)
+        if (start>end){ //eg: start=5, end=2
+            if (key<start && key<end)//eg: key=0
                 return true;
-            if (key>start)
+            if (key>start)//eg: key=6
                 return true;
         }
         if (start==end && start!=key && end!=key)
@@ -79,7 +79,7 @@ public class NodeImpl implements Node{
             if (key>start)
                 return true;
         }
-        if (start==end && (end!=key))
+        if (start==end && (end==key))//shouldnt it be opposite?
             return true;
         return false;
 
@@ -96,7 +96,7 @@ public class NodeImpl implements Node{
             if (key>start)
                 return true;
         }
-        if (start==end && start!=key)
+        if (start==end && start==key)//shouldnt it be opposite?
             return true;
         return false;
 
@@ -105,7 +105,7 @@ public class NodeImpl implements Node{
 
     private void createFingerTable() {
         for(int i=0;i<m;i++) {
-            finger.add(new Finger(this.nodeUrl, id + (int) Math.pow(2, i)));
+            finger.add(new Finger(this.nodeUrl, id + (int) Math.pow(2, i)));//here also need mod
         }
     }
 
@@ -148,7 +148,7 @@ public class NodeImpl implements Node{
     public int getCounter() throws RemoteException{
         counterLock.lock();
         try {
-            this.counter++;
+            this.counter++;//do we need to check m here?
             return this.counter;
         }finally {
             counterLock.unlock();
@@ -199,8 +199,7 @@ public class NodeImpl implements Node{
 
         for (int i=0;i<m;i++){
             System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i) + 1) +"in updateOthers");
-            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i) + 1));
-            Node p = (Node) Naming.lookup(pURL);
+                                                                                                                                                                                   Node p = (Node) Naming.lookup(pURL);
             p.updateFingerTable(this.nodeUrl,i);
         }
 
