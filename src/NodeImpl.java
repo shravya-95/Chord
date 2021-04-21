@@ -213,7 +213,8 @@ public class NodeImpl implements Node{
         int s_id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
         System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
-        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && this.id!=s_id){
+//        && this.id!=s_id
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) ){
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
@@ -236,14 +237,14 @@ public class NodeImpl implements Node{
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =1;i<=m-1;i++){
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
-            if (isInRangeIncEnd(id,fingerNodei.getNodeId(),finger.get(i+1).start)){
+            if (isInRangeIncEnd(this.id,fingerNodei.getNodeId(),finger.get(i+1).start)){
                 finger.get(i+1).node=finger.get(i).node;
 
             }
             else {
                 System.out.println("finger.get(i+1).node is "+ finger.get(i+1).node);
-                Node fingerNodeiPlusOne = (Node) Naming.lookup(finger.get(i+1).node);
-                finger.get(i+1).node=node0.findSuccessor(fingerNodeiPlusOne.getNodeId(),false);
+//                Node fingerNodeiPlusOne = (Node) Naming.lookup(finger.get(i+1).node);
+                finger.get(i+1).node=node0.findSuccessor(finger.get(i+1).start,false);
             }
         }
         System.out.println("Completed initfingerTable for "+this.nodeUrl);
@@ -255,8 +256,9 @@ public class NodeImpl implements Node{
         System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + key +"from findsuccessor");
         String node = findPredecessor(key);
         System.out.println("The successor for ---"+ key+"--- is ---" + node);
+        Node nodePred = (Node) Naming.lookup(node);
 
-        return node;
+        return nodePred.successor();
 
     }
     public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
