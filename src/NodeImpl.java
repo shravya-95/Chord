@@ -208,8 +208,9 @@ public class NodeImpl implements Node{
         for (int i=1;i<=m;i++){
 //            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
 //            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id - (int) Math.pow(2,i-1) + 1));
-            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id , 1 - (int) Math.pow(2,i-1)));
+
             String pURL = findPredecessor(modOf31(this.id, 1 - (int) Math.pow(2,i-1)));
+            System.out.println(this.nodeUrl+" ------ is updating pred of mod of -- "+this.id+"  "+(int) Math.pow(2,i-1)+" is -----"+ modOf31(this.id , 1 - (int) Math.pow(2,i-1))+" whihch is ----"+pURL);
 //            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
 
@@ -235,7 +236,7 @@ public class NodeImpl implements Node{
             p.updateFingerTable(nodeURL,i);
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
-//        printFingerTable();
+        printFingerTable();
     }
 
     public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
@@ -261,7 +262,7 @@ public class NodeImpl implements Node{
             }
         }
         System.out.println("Completed initfingerTable for "+this.nodeUrl);
-//        printFingerTable();
+        printFingerTable();
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
@@ -283,10 +284,11 @@ public class NodeImpl implements Node{
         Node node = (Node) Naming.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
         Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
-        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
+//        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
+        System.out.println("Printing in FINDPREDECESSOR-----"+node.getNodeId()+"   "+nodeSuccessor.getNodeId()+"    "+key);
         while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
             //Add RMI object node from nodeURL (update below)
-
+            System.out.println("Entered while loop -----");
             nodeURL = node.closestPrecedingFinger(key);
             node = (Node) Naming.lookup(nodeURL);
 
