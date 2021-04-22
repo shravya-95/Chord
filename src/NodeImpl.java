@@ -267,6 +267,8 @@ public class NodeImpl implements Node{
     public void printFingerTable() throws RemoteException, MalformedURLException, NotBoundException {
         String fingerTable="Finger Table: \n";
         for (Finger a:finger){
+            if (a.node==null)
+                continue;
             Node fingerNode = (Node)Naming.lookup(a.node);
             fingerTable+=a.start + ", "+fingerNode.getNodeId()+", "+fingerNode.getFullUrl();
         }
