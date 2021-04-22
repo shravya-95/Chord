@@ -29,13 +29,13 @@ public interface Node extends Remote {
 
     public void updateFingerTable(String nodeUrl, int i) throws RemoteException, NotBoundException, MalformedURLException;
 
-    void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException;
+    public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException;
 
-    void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
+    public void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
 
-    void addToNodeList(int id) throws RemoteException;
+    public void addToNodeList(int id) throws RemoteException;
 
-    String getPredecessorOf(int id) throws RemoteException;
+    public String getPredecessorOf(int id) throws RemoteException;
 
-    String getSuccessorOf(int id) throws RemoteException;
+    public String getSuccessorOf(int id) throws RemoteException;
 }
