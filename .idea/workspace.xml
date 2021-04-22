@@ -20,7 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c020d312-f25b-4d92-8b24-b4de1446ffeb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/sample-dictionary-file.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DictionaryLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Finger.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Finger.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Finger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Finger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NodeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.class" afterDir="false" />
@@ -47,6 +53,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618980566154" />
@@ -54,6 +61,11 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Shravya Gade\Repos\Chord\src" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
@@ -96,9 +108,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1618798398149" />
-    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser" timestamp="1619066369204">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="2589" y="72" key="#com.intellij.ide.util.MemberChooser" timestamp="1619080145987">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="2589" y="72" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1619080145987" />
     <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1619066369204" />
     <state x="371" y="130" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1618798381091">
       <screen x="0" y="0" width="1280" height="680" />
@@ -116,9 +129,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="347" y="73" width="587" height="534" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1618980011082" />
-    <state x="297" y="151" key="run.anything.popup" timestamp="1619046389709">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="2366" y="231" key="run.anything.popup" timestamp="1619074780628">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="2366" y="231" key="run.anything.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1619074780628" />
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680@0.0.1280.680" timestamp="1619046389709" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1619054081502">
       <screen x="0" y="0" width="1280" height="680" />

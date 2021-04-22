@@ -15,7 +15,7 @@ public interface Node extends Remote {
     public String  successor () throws RemoteException;
     public String  predecessor  () throws RemoteException;
     public boolean join (String nodeURL) throws RemoteException;
-    public boolean joinFinished (String nodeURL) throws RemoteException;
+//    public boolean joinFinished (String nodeURL) throws RemoteException;
     public boolean insert (String word, String definition) throws RemoteException;
     public String  lookup (String word) throws RemoteException;
     public void  printFingerTable() throws RemoteException;
@@ -40,4 +40,8 @@ public interface Node extends Remote {
     public String getPredecessorOf(int id) throws RemoteException;
 
     public String getSuccessorOf(int id) throws RemoteException;
+
+    public boolean joinLockRelease(String nodeUrl) throws RemoteException;
+
+    public List<Integer> getNodeList() throws RemoteException;
 }

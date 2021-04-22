@@ -12,17 +12,18 @@ public class DictionaryLoader {
             throw new RuntimeException("Syntax: java DictionaryLoader someChordNodeURL dictionaryFile \n URL should be sent in the form alpha.umn.edu:1099 where 1099 is the port");
         }
         System.setSecurityManager(new SecurityManager());
-        Node node = (Node) Naming.lookup("//" + args[0]);
+        String nodeUrl = Integer.toString(FNV1aHash.hash32("//" + args[0]));
+        Node node = (Node) Naming.lookup(nodeUrl);
 
         File file = new File(args[1]);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         while ((line = br.readLine()) != null) {
             String[] wordMeaning = line.split(":");
-            int wordHash = FNV1aHash.hash32(wordMeaning[0]);
+            int wordHash = FNV1aHash.hash32(wordMeaning[0].trim());
             String wordNodeUrl = node.findSuccessor(wordHash, false); //check
             Node wordNode = (Node) Naming.lookup(wordNodeUrl);
-            wordNode.insert(wordMeaning[0], wordMeaning[1]); //needs to overwrite if same key
+            wordNode.insert(wordMeaning[0].trim(), wordMeaning[1].trim()); //needs to overwrite if same key
         }
     }
 }

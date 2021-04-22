@@ -23,12 +23,21 @@ public class NodeImpl implements Node{
     public HashMap<String,String> dictionary = new HashMap<>();
     public String fullUrl;
     public List<Integer> nodeList = new ArrayList<>();
+    public int bootstrapHashValue=0;
 
-    public NodeImpl(String nodeURL, int id, String fullUrl){
+    /**
+     *
+     * @param nodeURL hashed url in string for rmi use
+     * @param id hashed url
+     * @param fullUrl node url without hashing
+     * @param bootstrapHashValue node0's hashed value
+     */
+    public NodeImpl(String nodeURL, int id, String fullUrl, int bootstrapHashValue){
         this.nodeUrl=nodeURL;
-        createFingerTable();
         this.fullUrl = fullUrl;
-        this.id = FNV1aHash.hash32(fullUrl);
+        this.id = id;
+        this.bootstrapHashValue = bootstrapHashValue;
+        createFingerTable();
     }
 
 
@@ -102,20 +111,12 @@ public class NodeImpl implements Node{
     private void createFingerTable() {
         finger.add(new Finger(null, -1));
         for(int i=1;i<=m;i++) {
-//            finger.add(new Finger(this.nodeUrl, modOf31(this.id + (int) Math.pow(2, i-1))));
+//
+//            System.out.println("modOf31("+this.id +"," +(int) Math.pow(2, i-1 )+") --- "+modOf31(this.id ,(int) Math.pow(2, i-1)));
             finger.add(new Finger(this.nodeUrl, modOf31(this.id ,(int) Math.pow(2, i-1))));
         }
     }
 
-    private int modOf31(int num){
-        //keys will go from 0 to 30
-        if (num>=0)
-            return (num%(int)Math.pow(2,31));
-        else {
-            num = num+(int) Math.pow(2, 31);
-            return ((num % (int) Math.pow(2, 31)));
-        }
-    }
 
     public String getFullUrl(){
         return this.fullUrl;
@@ -135,11 +136,12 @@ public class NodeImpl implements Node{
 
     public String printStructure() throws RemoteException, NotBoundException, MalformedURLException {
 //        Registry registry = LocateRegistry.getRegistry();
-        Node node0 = (Node)Naming.lookup("node0");
+        Node node0 = (Node)Naming.lookup(Integer.toString(this.bootstrapHashValue));
+        List<Integer> currNodeList = node0.getNodeList();
         int numNodes = node0.getCounter();//check if it needs -1
         String structure = "";
-        for(int i=0;i<numNodes;i++){
-            Node currentNode = (Node)Naming.lookup("node"+i);
+        for(int i=0;i<this.nodeList.size();i++){
+            Node currentNode = (Node)Naming.lookup(Integer.toString(nodeList.get(i)));
             Node successorNode = (Node)Naming.lookup(currentNode.successor());
             Node predecessorNode = (Node)Naming.lookup(currentNode.predecessor());
 
@@ -162,12 +164,11 @@ public class NodeImpl implements Node{
     }
 
     public boolean join (String nodeURL) throws RemoteException{
-        lock.lock();
         try {
             if (nodeURL!=null){
                 System.out.println("Not node-0, joining "+this.nodeUrl+" to the DHT.......");
                 //RMI object for node URL
-                Node node0 = (Node) Naming.lookup("node0");
+                Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
                 node0.addToNodeList(this.id);
 
                 initFingerTable(nodeURL);
@@ -175,10 +176,10 @@ public class NodeImpl implements Node{
                 //move keys in (predecessor,n] from successor
             }
             else{
-                System.out.println("Node-0 joining to the DHT.......");
+                System.out.println("Node-0 joining to the DHT......."+this.id);
                 predecessor = this.nodeUrl;
                 successor=this.nodeUrl;
-                this.nodeList.add(0);
+                this.nodeList.add(this.bootstrapHashValue);
             }
             System.out.println("Joined successfully!!!");
             return true;
@@ -203,18 +204,32 @@ public class NodeImpl implements Node{
             counterLock.unlock();
         }
     }
-
-    public boolean joinFinished(String nodeURL) throws RemoteException {
-        try{
+    public boolean joinLockRelease(String nodeUrl) throws RemoteException{
+        if(lockToJoin.isLocked())
             lockToJoin.unlock();
-            return true;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-
+        return true;
     }
+
+    @Override
+    public List<Integer> getNodeList() throws RemoteException {
+        return this.nodeList;
+    }
+
+    public boolean joinLock(String nodeUrl) throws RemoteException{
+        lockToJoin.lock();
+        return true;
+    }
+//    public boolean joinFinished(String nodeURL) throws RemoteException {
+//        try{
+//            lock.unlock();
+//            return true;
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//            return false;
+//        }
+
+//    }
 
     public boolean insert(String word, String definition) throws RemoteException {
         this.dictionary.put(word, definition);
@@ -273,19 +288,20 @@ public class NodeImpl implements Node{
     public String getPredecessorOf(int id) throws RemoteException {
         int index = nodeList.indexOf(id);
         if (index==0)
-            return ("node"+this.nodeList.get(this.nodeList.size()-1));
-        return ("node"+this.nodeList.get(index-1));
+            return (Integer.toString(this.nodeList.get(this.nodeList.size()-1)));
+        return (Integer.toString(this.nodeList.get(index-1)));
     }
 
     @Override
     public String getSuccessorOf(int id) throws RemoteException {
-        if (id==this.nodeList.size()-1)
-            return ("node"+this.nodeList.get(0));
-        return ("node"+this.nodeList.get(id+1));
+        int index = nodeList.indexOf(id);
+        if (index==this.nodeList.size()-1)
+            return (Integer.toString(this.nodeList.get(0)));
+        return (Integer.toString(this.nodeList.get(index+1)));
     }
 
     public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
-        Node node0 = (Node) Naming.lookup("node0");
+        Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
         this.predecessor = node0.getPredecessorOf(this.id);
         this.successor = node0.getSuccessorOf(this.id);
         System.out.println("Updating finger table for ---- "+ this.nodeUrl+"----- called by "+nodeURL);
@@ -311,7 +327,7 @@ public class NodeImpl implements Node{
 
     public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Running initFingerTable for node --- " + nodeURL);
-        Node node0 = (Node) Naming.lookup(nodeURL);
+        Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
         System.out.println("Node "+this.nodeUrl+" finger table size is "+finger.size());
         finger.get(1).node = node0.findSuccessor(finger.get(1).start, false);
         this.successor = finger.get(1).node;
@@ -337,10 +353,10 @@ public class NodeImpl implements Node{
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
-        System.out.println("Running FINDSUCCESSOR for node key --- " + key);
-        System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + key +"from findsuccessor");
+        if (traceFlag) System.out.println("Running FINDSUCCESSOR for key --- " + key + "in node ID ----"+this.fullUrl);
+        if (traceFlag) System.out.println("Calling  findPredecessor from node --- "+this.fullUrl+" for node key --- " + key +"within findSuccessor");
         String node = findPredecessor(key);
-        System.out.println("The successor for ---"+ key+"--- is ---" + node);
+        if (traceFlag) System.out.println("The successor for ---"+ key+"--- is ---" + node);
         Node nodePred = (Node) Naming.lookup(node);
         return nodePred.successor();
     }
@@ -399,10 +415,7 @@ public class NodeImpl implements Node{
         return this.id;
     }
 
-    public boolean joinLock(String nodeUrl) throws RemoteException{
-        lockToJoin.lock();
-        return true;
-    }
+
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
         System.setSecurityManager (new SecurityManager ());
@@ -435,29 +448,41 @@ public class NodeImpl implements Node{
         }
         int nodeId;
         try{
-            Node node0 = (Node)registry.lookup("node0");
+            String node0Url = "//"+url+":"+port+"/node0";
+            int bootstrapHash = FNV1aHash.hash32(node0Url);
+            Node node0 = (Node)registry.lookup(Integer.toString(bootstrapHash));
             nodeId = node0.getCounter();
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
-            System.out.println("This is not node-0 ---- "+ nodeUrl);
+            int hashUrl = FNV1aHash.hash32(nodeUrl);
+            System.out.println("This is not node-0 ---- "+ Integer.toString(hashUrl));
             if (node0.joinLock(nodeUrl)) {
-                NodeImpl newNode = new NodeImpl("node" + nodeId, nodeId, nodeUrl);
+                NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl), hashUrl, nodeUrl,bootstrapHash);
                 Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
-                registry.bind("node" + nodeId, nodeStub);
-                boolean res = newNode.join("node0");
-                if (res)
-                    node0.joinFinished("nodeUrl");
+                registry.bind(Integer.toString(hashUrl), nodeStub);
+                boolean res = newNode.join(Integer.toString(bootstrapHash));
+                if (res) {
+//                    node0.joinFinished(nodeUrl);
+                    System.out.println("Join was successful! --- Releasing lock");
+
+                    node0.joinLockRelease(nodeUrl);
+                }
+
             }
         } catch (NotBoundException e){
             //node0 not created
             nodeId =0;
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
-            System.out.println("This is node-0 ---"+nodeUrl);
-            NodeImpl newNode = new NodeImpl("node0",nodeId,nodeUrl);
+            int hashUrl =FNV1aHash.hash32(nodeUrl);
+            System.out.println("This is node-0 ---"+Integer.toString(hashUrl));
+            NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl),hashUrl,nodeUrl,hashUrl);
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
-            registry.bind("node"+nodeId,nodeStub);
+            registry.bind( Integer.toString(hashUrl),nodeStub);
             boolean res = newNode.join(null);
-            if (res)
-                newNode.joinFinished("node0");
+            if (res) {
+//                newNode.joinFinished(nodeUrl);
+                System.out.println("Join was successful!");
+//                newNode.joinLockRelease(nodeUrl);
+            }
         }
     }
 

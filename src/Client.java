@@ -11,7 +11,9 @@ public class Client{
             throw new RuntimeException( "Syntax: java Client someChordNodeURL \n URL should be sent in the form alpha.umn.edu:1099 where 1099 is the port" );
         }
         System.setSecurityManager (new SecurityManager ());
-        Node node = (Node) Naming.lookup ("//" + args[0]);
+        String nodeUrl = Integer.toString(FNV1aHash.hash32("//" + args[0]));
+
+        Node node = (Node) Naming.lookup (nodeUrl);
 
         System.out.println("Enter 1 to lookup, 2 for printing DHT structure, 2 to exit");
         Scanner in = new Scanner(System.in);
@@ -30,6 +32,8 @@ public class Client{
                 choice = in.nextInt();
             } else if(choice==2){
                 System.out.println(node.printStructure());
+                System.out.print("Enter your choice: ");
+                choice = in.nextInt();
             }
         }
     }
