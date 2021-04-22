@@ -33,24 +33,24 @@ public class NodeImpl implements Node{
     public boolean isInRange(int start, int end, int key){
         if (start<end){
             if(key>start && key<end){
-                System.out.println("1. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
+//                System.out.println("1. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
                 return true;}
         }
         if (start>end){
             if (key<start && key<end){
-                System.out.println("2. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
+//                System.out.println("2. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
                 return true;
             }
 
 
             if (key>start){
-                System.out.println("3. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
+//                System.out.println("3. Inside isInRange"+start+"   "+end+"    "+key+" ---- True");
                 return true;
             }
         }
         if (start==end && start!=key)
             return true;
-        System.out.println("4. Inside isInRange"+start+"   "+end+"    "+key+" ---- False");
+//        System.out.println("4. Inside isInRange"+start+"   "+end+"    "+key+" ---- False");
         return false;
 
     }
@@ -108,8 +108,10 @@ public class NodeImpl implements Node{
         //keys will go from 0 to 30
         if (num>=0)
             return (num%(int)Math.pow(2,31));
-        else
-            return (num%(int)Math.pow(2,31)+(int)Math.pow(2,31));
+        else {
+            num = num+(int) Math.pow(2, 31);
+            return ((num % (int) Math.pow(2, 31)));
+        }
     }
 
     public boolean join (String nodeURL) throws RemoteException{
@@ -196,7 +198,9 @@ public class NodeImpl implements Node{
         System.out.println(this.nodeUrl+" ------ updating others finger tables");
 
         for (int i=1;i<=m;i++){
-            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
+//            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
+            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id - (int) Math.pow(2,i-1) + 1));
+
             String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
 
@@ -206,7 +210,7 @@ public class NodeImpl implements Node{
     }
 
     public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
-        System.out.println("Updating finger table for ---- "+ this.nodeUrl);
+        System.out.println("Updating finger table for ---- "+ this.nodeUrl+"----- called by "+nodeURL);
         Node node = (Node) Naming.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
         Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
@@ -214,7 +218,7 @@ public class NodeImpl implements Node{
         int fingerId = fingerIdNode.getNodeId();
         System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
 //        && this.id!=s_id
-        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) ){
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && this.id!=s_id ){
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
@@ -222,7 +226,7 @@ public class NodeImpl implements Node{
             p.updateFingerTable(nodeURL,i);
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
-        printFingerTable();
+//        printFingerTable();
     }
 
     public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
@@ -248,7 +252,7 @@ public class NodeImpl implements Node{
             }
         }
         System.out.println("Completed initfingerTable for "+this.nodeUrl);
-        printFingerTable();
+//        printFingerTable();
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
