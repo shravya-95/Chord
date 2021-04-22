@@ -1,0 +1,8 @@
+node:
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node1 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node2 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node3 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node4 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node5 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node6 &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > node7 &
