@@ -7,11 +7,11 @@ import java.util.List;
 public interface Node extends Remote {
 
     public String  findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException;
-    public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException;
+    public String  findPredecessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException;
     public int getNodeId() throws RemoteException;
     public String getFullUrl() throws RemoteException;
     public String getNodeUrl() throws RemoteException;
-    public String  closestPrecedingFinger (int key) throws RemoteException, MalformedURLException, NotBoundException;
+    public String  closestPrecedingFinger (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException;
     public String  successor () throws RemoteException;
     public String  predecessor  () throws RemoteException;
     public boolean join (String nodeURL) throws RemoteException;
