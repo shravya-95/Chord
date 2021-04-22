@@ -99,8 +99,8 @@ public class NodeImpl implements Node{
     private void createFingerTable() {
         finger.add(new Finger(null, -1));
         for(int i=1;i<=m;i++) {
-            finger.add(new Finger(this.nodeUrl, modOf31(this.id + (int) Math.pow(2, i-1))));
-
+//            finger.add(new Finger(this.nodeUrl, modOf31(this.id + (int) Math.pow(2, i-1))));
+            finger.add(new Finger(this.nodeUrl, modOf31(this.id ,(int) Math.pow(2, i-1))));
         }
     }
 
@@ -114,6 +114,13 @@ public class NodeImpl implements Node{
         }
     }
 
+
+    private int modOf31(int num1, int num2){
+        long sum = num1 + num2;
+        if (sum<0)
+            sum+= Math.pow(2,31);
+        return (int)(sum % Math.pow(2,31));
+    }
 
     public boolean join (String nodeURL) throws RemoteException{
         lock.lock();
@@ -200,9 +207,10 @@ public class NodeImpl implements Node{
 
         for (int i=1;i<=m;i++){
 //            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
-            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id - (int) Math.pow(2,i-1) + 1));
-
-            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
+//            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id - (int) Math.pow(2,i-1) + 1));
+            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id , 1 - (int) Math.pow(2,i-1)));
+            String pURL = findPredecessor(modOf31(this.id, 1 - (int) Math.pow(2,i-1)));
+//            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
 
             p.updateFingerTable(this.nodeUrl,i);
