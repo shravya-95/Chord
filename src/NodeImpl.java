@@ -6,10 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class NodeImpl implements Node{
@@ -32,6 +29,8 @@ public class NodeImpl implements Node{
         createFingerTable();
         this.fullUrl = fullUrl;
     }
+
+
 
     public boolean isInRange(int start, int end, int key){
         if (start<end){
@@ -71,7 +70,7 @@ public class NodeImpl implements Node{
 //        if (start==end)
 //            return true;
 //        return false;
-        boolean ans = isInRange(start,end,key) || start==key;
+        boolean ans = isInRange(start,end,key) || (start==key);
         System.out.println("Inside isInRangeIncStart"+start+"   "+end+"    "+key+" ----"+ans);
         return ans;
 
@@ -91,7 +90,7 @@ public class NodeImpl implements Node{
 //        if (start==end)
 //            return true;
 //        return false;
-        boolean ans = isInRange(start,end,key) || end==key;
+        boolean ans = isInRange(start,end,key) || (key==end );
         System.out.println("Inside isInRangeIncEnd"+start+"   "+end+"    "+key+" ----"+ans);
         return ans;
 
@@ -129,7 +128,7 @@ public class NodeImpl implements Node{
         return this.finger;
     }
 
-    public int getEntriesCount(){
+    public int getEntriesCount() throws RemoteException{
         return this.dictionary.size();
     }
 
@@ -169,6 +168,7 @@ public class NodeImpl implements Node{
                 //RMI object for node URL
                 Node node0 = (Node) Naming.lookup("node0");
                 node0.addToNodeList(this.id);
+
                 initFingerTable(nodeURL);
                 updateOthers();
                 //move keys in (predecessor,n] from successor
@@ -266,12 +266,14 @@ public class NodeImpl implements Node{
 
     public void addToNodeList(int id) throws RemoteException {
         this.nodeList.add(id);
+        Collections.sort(this.nodeList);
     }
 
     public String getPredecessorOf(int id) throws RemoteException {
-        if (id==0)
+        int index = nodeList.indexOf(id);
+        if (index==0)
             return ("node"+this.nodeList.get(this.nodeList.size()-1));
-        return ("node"+this.nodeList.get(id-1));
+        return ("node"+this.nodeList.get(index-1));
     }
 
     @Override
@@ -291,9 +293,10 @@ public class NodeImpl implements Node{
         Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
         int s_id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
-        System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
+//        System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
 //        && this.id!=s_id
-        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) ){
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && finger.get(i).start!=fingerId ){
+            System.out.println("UPDATING FINGER TABLE OF "+this.nodeUrl+" finger("+i+") node is "+nodeURL);
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
@@ -301,7 +304,7 @@ public class NodeImpl implements Node{
             p.updateFingerTable(nodeURL,i);
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
-        this.successor=finger.get(1).node;
+//        this.successor=finger.get(1).node;
         printFingerTable();
     }
 

@@ -20,7 +20,7 @@ public interface Node extends Remote {
     public String  lookup (String word) throws RemoteException;
     public void  printFingerTable() throws RemoteException;
     public List<Finger> getFingerTable() throws RemoteException;
-    public int getEntriesCount();
+    public int getEntriesCount() throws RemoteException;
     public String  printDictionary() throws RemoteException;
     public void setPredecessor(String nodeUrl) throws RemoteException;
     public void setSuccessor(String nodeUrl) throws RemoteException;
@@ -35,7 +35,7 @@ public interface Node extends Remote {
 
     void addToNodeList(int id) throws RemoteException;
 
-    String getPredecessorOf(int id) throws RemoteException;
+    public String getPredecessorOf(int id) throws RemoteException;
 
-    String getSuccessorOf(int id) throws RemoteException;
+    public String getSuccessorOf(int id) throws RemoteException;
 }
