@@ -23,11 +23,13 @@ public class NodeImpl implements Node{
     public int counter=0;
     public ReentrantLock counterLock =  new ReentrantLock();
     public HashMap<String,String> dictionary = new HashMap<>();
+    public String fullUrl;
 
-    public NodeImpl(String nodeURL, int id){
+    public NodeImpl(String nodeURL, int id, String fullUrl){
         this.id = id;
         this.nodeUrl=nodeURL;
         createFingerTable();
+        this.fullUrl = fullUrl;
     }
 
     public boolean isInRange(int start, int end, int key){
@@ -114,6 +116,41 @@ public class NodeImpl implements Node{
         }
     }
 
+    public String getFullUrl(){
+        return this.fullUrl;
+    }
+
+    public String getNodeUrl(){
+        return this.nodeUrl;
+    }
+
+    public List<Finger> getFingerTable(){
+        return this.finger;
+    }
+
+    public int getEntriesCount(){
+        return this.dictionary.size();
+    }
+
+    public String printStructure() throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry();
+        Node node0 = (Node)registry.lookup("node0");
+        int numNodes = node0.getCounter();//check if it needs -1
+        String structure = "";
+        for(int i=0;i<numNodes;i++){
+            Node node = (Node)registry.lookup("node"+i);
+            Node successor = (Node)registry.lookup(node.successor());
+            Node predecessor = (Node)registry.lookup(node.predecessor());
+            structure += "For NODE ID: "+node.getNodeUrl()+"\n-----------------------\n   Key: "+node.getNodeId();
+            structure += "\n   Successor: "+successor.getFullUrl()+"\n   Predecessor: "+predecessor.getFullUrl();
+            structure += "\n   Finger table contents: ";
+            for (Finger a:node.getFingerTable()){
+                structure += "      Finger start: "+a.start+", Finger node: "+a.node;
+            }
+            structure+="Number of entries it stores: "+node.getEntriesCount();
+        }
+        return structure;
+    }
 
     private int modOf31(int num1, int num2){
         long sum = num1 + num2;
@@ -174,12 +211,14 @@ public class NodeImpl implements Node{
     }
 
     public boolean insert(String word, String definition) throws RemoteException {
-
-        return false;
+        this.dictionary.put(word, definition);
+        return true;
     }
 
     public String lookup(String word) throws RemoteException {
-        return null;
+        if(this.dictionary.containsKey(word))
+            return this.dictionary.get(word);
+        return word+" not found";
     }
 
     public void printFingerTable() throws RemoteException {
@@ -273,10 +312,10 @@ public class NodeImpl implements Node{
         String node = findPredecessor(key);
         System.out.println("The successor for ---"+ key+"--- is ---" + node);
         Node nodePred = (Node) Naming.lookup(node);
-
         return nodePred.successor();
-
     }
+
+
     public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Running FINDPREDECESSOR in node " + this.nodeUrl+ "for key --- " + key);
         String nodeURL = this.nodeUrl;
@@ -364,7 +403,7 @@ public class NodeImpl implements Node{
             nodeId = node0.getCounter();
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
             System.out.println("This is not node-0 ---- "+ nodeUrl);
-            NodeImpl newNode = new NodeImpl("node"+nodeId, nodeId);
+            NodeImpl newNode = new NodeImpl("node"+nodeId, nodeId,nodeUrl);
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
             registry.bind("node"+nodeId,nodeStub);
             boolean res = newNode.join("node0");
@@ -375,7 +414,7 @@ public class NodeImpl implements Node{
             nodeId =0;
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
             System.out.println("This is node-0 ---"+nodeUrl);
-            NodeImpl newNode = new NodeImpl("node0",nodeId);
+            NodeImpl newNode = new NodeImpl("node0",nodeId,nodeUrl);
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
             registry.bind("node"+nodeId,nodeStub);
             boolean res = newNode.join(null);
