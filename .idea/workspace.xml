@@ -20,14 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c020d312-f25b-4d92-8b24-b4de1446ffeb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryLoader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DictionaryLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DictionaryLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NodeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NodeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/null_logfile.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node0_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node1_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node2_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node3_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node4_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node5_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node6_logfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node7_logfile" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
