@@ -158,7 +158,8 @@ public class NodeImpl implements Node{
             for (Finger a:currentNode.getFingerTable()){
                 structure += "      Finger start: "+a.start+", Finger node: "+a.node;
             }
-            structure+="Number of entries it stores: "+currentNode.getEntriesCount();
+            structure+="    Number of entries it stores: "+currentNode.getEntriesCount();
+            structure+="    Full URL: "+currentNode.getFullUrl();
         }
         return structure;
     }
