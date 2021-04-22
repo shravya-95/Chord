@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -6,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,6 +29,7 @@ public class NodeImpl implements Node{
     public String fullUrl;
     public List<Integer> nodeList = new ArrayList<>();
     public int bootstrapHashValue=0;
+    public String logfile = this.fullUrl+"_logfile.txt";
 
     /**
      *
@@ -162,6 +168,28 @@ public class NodeImpl implements Node{
         if (sum<0)
             sum+= Math.pow(2,31);
         return (int)(sum % Math.pow(2,31));
+    }
+
+    public void writeToLog(String rawContent) {
+        String fileName = this.logfile;
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        String content = "CurrentTime : "+ formatter.format(date) +"|"+ "Event Message: "+rawContent;
+
+        try {
+
+            File oFile = new File(fileName);
+            if (!oFile.exists()) {
+                oFile.createNewFile();
+            }
+            if (oFile.canWrite()) {
+                BufferedWriter oWriter = new BufferedWriter(new FileWriter(fileName, true));
+                oWriter.write(content);
+                oWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean join (String nodeURL) throws RemoteException{
@@ -355,35 +383,34 @@ public class NodeImpl implements Node{
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
-        if (traceFlag) System.out.println("Running FINDSUCCESSOR for key --- " + key + "in node ID ----"+this.fullUrl);
-        if (traceFlag) System.out.println("Calling  findPredecessor from node --- "+this.fullUrl+" for node key --- " + key +"within findSuccessor");
+        if (traceFlag) writeToLog("Running FINDSUCCESSOR for key --- " + key + "in node ID ----"+this.fullUrl);
+        if (traceFlag) writeToLog("Calling  findPredecessor from node --- "+this.fullUrl+" for node key --- " + key +"within findSuccessor");
         String node = findPredecessor(key);
-        if (traceFlag) System.out.println("The successor for ---"+ key+"--- is ---" + node);
+        if (traceFlag) writeToLog("The predecessor for ---"+ key+"--- is ---" + node);
         Node nodePred = (Node) Naming.lookup(node);
+        if (traceFlag) writeToLog("The successor for ---"+ key+"--- is ---" + nodePred.successor());
         return nodePred.successor();
     }
 
 
     public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
-        System.out.println("Running FINDPREDECESSOR in node " + this.nodeUrl+ "for key --- " + key);
+        System.out.println("Running FINDPREDECESSOR in node " + this.fullUrl+ "for key --- " + key);
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
-        System.out.println("successor"+this.successor);
         //Add RMI objects node from nodeURL and
         Node node = (Node) Naming.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
         Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
 //        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
-        System.out.println("Printing in FINDPREDECESSOR-----"+node.getNodeId()+"   "+nodeSuccessor.getNodeId()+"    "+key);
         while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
+            System.out.println("In FINDPREDECESSOR not found -----"+key+" in range("+node.getNodeId()+","+nodeSuccessor.getNodeId()+"]");
             //Add RMI object node from nodeURL (update below)
-            System.out.println("Entered while loop -----");
             nodeURL = node.closestPrecedingFinger(key);
             node = (Node) Naming.lookup(nodeURL);
 
             nodeSuccessorURL = node.successor();
             nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
-            System.out.println("End loop --- now node is "+nodeURL+"--- and node successor is"+nodeSuccessorURL);
+            System.out.println("End loop --- now node is "+nodeURL+"--- and node successor is  "+nodeSuccessorURL);
         }
         System.out.println("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
 
