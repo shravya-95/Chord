@@ -228,7 +228,7 @@ public class NodeImpl implements Node{
         int fingerId = fingerIdNode.getNodeId();
         System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
 //        && this.id!=s_id
-        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && this.id!=s_id ){
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) ){
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
@@ -236,6 +236,7 @@ public class NodeImpl implements Node{
             p.updateFingerTable(nodeURL,i);
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
+        this.successor=finger.get(1).node;
         printFingerTable();
     }
 
@@ -247,6 +248,7 @@ public class NodeImpl implements Node{
         this.successor = finger.get(1).node;
         Node nodeSuccessor = (Node) Naming.lookup(this.successor);
         this.predecessor=nodeSuccessor.predecessor();
+        System.out.println("PREDECESSOR FOR "+this.nodeUrl+" is ---"+this.predecessor);
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =1;i<=m-1;i++){
@@ -261,8 +263,8 @@ public class NodeImpl implements Node{
                 finger.get(i+1).node=node0.findSuccessor(finger.get(i+1).start,false);
             }
         }
-        System.out.println("Completed initfingerTable for "+this.nodeUrl);
-        printFingerTable();
+        System.out.println("Completed initfingerTable for "+this.nodeUrl + "predecessor is ---"+this.predecessor+"sucessor is ---"+this.successor);
+//        printFingerTable();
     }
 
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
@@ -294,6 +296,7 @@ public class NodeImpl implements Node{
 
             nodeSuccessorURL = node.successor();
             nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
+            System.out.println("End loop --- now node is "+nodeURL+"--- and node successor is"+nodeSuccessorURL);
         }
         System.out.println("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
 
