@@ -132,22 +132,23 @@ public class NodeImpl implements Node{
         return this.dictionary.size();
     }
 
-    public String printStructure() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry();
-        Node node0 = (Node)registry.lookup("node0");
+    public String printStructure() throws RemoteException, NotBoundException, MalformedURLException {
+//        Registry registry = LocateRegistry.getRegistry();
+        Node node0 = (Node)Naming.lookup("node0");
         int numNodes = node0.getCounter();//check if it needs -1
         String structure = "";
         for(int i=0;i<numNodes;i++){
-            Node node = (Node)registry.lookup("node"+i);
-            Node successor = (Node)registry.lookup(node.successor());
-            Node predecessor = (Node)registry.lookup(node.predecessor());
-            structure += "For NODE ID: "+node.getNodeUrl()+"\n-----------------------\n   Key: "+node.getNodeId();
-            structure += "\n   Successor: "+successor.getFullUrl()+"\n   Predecessor: "+predecessor.getFullUrl();
+            Node currentNode = (Node)Naming.lookup("node"+i);
+            Node successorNode = (Node)Naming.lookup(currentNode.successor());
+            Node predecessorNode = (Node)Naming.lookup(currentNode.predecessor());
+
+            structure += "For NODE ID: "+currentNode.getNodeUrl()+"\n-----------------------\n   Key: "+currentNode.getNodeId();
+            structure += "\n   Successor: "+successorNode.getFullUrl()+"\n   Predecessor: "+predecessorNode.getFullUrl();
             structure += "\n   Finger table contents: ";
-            for (Finger a:node.getFingerTable()){
+            for (Finger a:currentNode.getFingerTable()){
                 structure += "      Finger start: "+a.start+", Finger node: "+a.node;
             }
-            structure+="Number of entries it stores: "+node.getEntriesCount();
+            structure+="Number of entries it stores: "+currentNode.getEntriesCount();
         }
         return structure;
     }
