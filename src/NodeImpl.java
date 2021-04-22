@@ -20,6 +20,7 @@ public class NodeImpl implements Node{
     public String successor;
     public int m =31;
     private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock lockToJoin = new ReentrantLock();
     public int counter=0;
     public ReentrantLock counterLock =  new ReentrantLock();
     public HashMap<String,String> dictionary = new HashMap<>();
@@ -205,7 +206,7 @@ public class NodeImpl implements Node{
 
     public boolean joinFinished(String nodeURL) throws RemoteException {
         try{
-            lock.unlock();
+            lockToJoin.unlock();
             return true;
         }
         catch (Exception e){
@@ -394,6 +395,12 @@ public class NodeImpl implements Node{
     public int getNodeId() throws RemoteException{
         return this.id;
     }
+
+    public boolean joinLock(String nodeUrl) throws RemoteException{
+        lockToJoin.lock();
+        return true;
+    }
+
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
         System.setSecurityManager (new SecurityManager ());
         Registry registry = null;
@@ -429,12 +436,14 @@ public class NodeImpl implements Node{
             nodeId = node0.getCounter();
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
             System.out.println("This is not node-0 ---- "+ nodeUrl);
-            NodeImpl newNode = new NodeImpl("node"+nodeId, nodeId,nodeUrl);
-            Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
-            registry.bind("node"+nodeId,nodeStub);
-            boolean res = newNode.join("node0");
-            if (res)
-                newNode.joinFinished("node0");
+            if (node0.joinLock(nodeUrl)) {
+                NodeImpl newNode = new NodeImpl("node" + nodeId, nodeId, nodeUrl);
+                Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
+                registry.bind("node" + nodeId, nodeStub);
+                boolean res = newNode.join("node0");
+                if (res)
+                    node0.joinFinished("nodeUrl");
+            }
         } catch (NotBoundException e){
             //node0 not created
             nodeId =0;
