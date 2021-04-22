@@ -24,6 +24,7 @@ public class NodeImpl implements Node{
     public ReentrantLock counterLock =  new ReentrantLock();
     public HashMap<String,String> dictionary = new HashMap<>();
     public String fullUrl;
+    public List<Integer> nodeList = new ArrayList<>();
 
     public NodeImpl(String nodeURL, int id, String fullUrl){
         this.id = id;
@@ -166,6 +167,8 @@ public class NodeImpl implements Node{
             if (nodeURL!=null){
                 System.out.println("Not node-0, joining "+this.nodeUrl+" to the DHT.......");
                 //RMI object for node URL
+                Node node0 = (Node) Naming.lookup("node0");
+                node0.addToNodeList(this.id);
                 initFingerTable(nodeURL);
                 updateOthers();
                 //move keys in (predecessor,n] from successor
@@ -174,6 +177,7 @@ public class NodeImpl implements Node{
                 System.out.println("Node-0 joining to the DHT.......");
                 predecessor = this.nodeUrl;
                 successor=this.nodeUrl;
+                this.nodeList.add(0);
             }
             System.out.println("Joined successfully!!!");
             return true;
@@ -260,7 +264,29 @@ public class NodeImpl implements Node{
 
     }
 
+    @Override
+    public void addToNodeList(int id) throws RemoteException {
+        this.nodeList.add(id);
+    }
+
+    @Override
+    public String getPredecessorOf(int id) throws RemoteException {
+        if (id==0)
+            return ("node"+this.nodeList.get(this.nodeList.size()-1));
+        return ("node"+this.nodeList.get(id-1));
+    }
+
+    @Override
+    public String getSuccessorOf(int id) throws RemoteException {
+        if (id==this.nodeList.size()-1)
+            return ("node"+this.nodeList.get(0));
+        return ("node"+this.nodeList.get(id+1));
+    }
+
     public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
+        Node node0 = (Node) Naming.lookup("node0");
+        this.predecessor = node0.getPredecessorOf(this.id);
+        this.successor = node0.getSuccessorOf(this.id);
         System.out.println("Updating finger table for ---- "+ this.nodeUrl+"----- called by "+nodeURL);
         Node node = (Node) Naming.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
@@ -275,6 +301,7 @@ public class NodeImpl implements Node{
             String pUrl = this.predecessor;
             Node p = (Node) Naming.lookup(pUrl);
             p.updateFingerTable(nodeURL,i);
+            this.successor=finger.get(1).node;
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
         printFingerTable();
