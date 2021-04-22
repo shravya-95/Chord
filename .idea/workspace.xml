@@ -19,6 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="c020d312-f25b-4d92-8b24-b4de1446ffeb" name="Default Changelist" comment="">
 <<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/NodeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.class" afterDir="false" />
@@ -30,6 +31,9 @@
 >>>>>>> 8ee626d2c69375ac5cd1bd6b998b3eb50308e675
       <change beforePath="$PROJECT_DIR$/src/NodeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NodeImpl.java" afterDir="false" />
     </list>
+=======
+    <list default="true" id="c020d312-f25b-4d92-8b24-b4de1446ffeb" name="Default Changelist" comment="" />
+>>>>>>> shravya-new-changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -255,6 +259,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1618798398149" />
+    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser" timestamp="1619066369204">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1619066369204" />
     <state x="371" y="130" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1618798381091">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
