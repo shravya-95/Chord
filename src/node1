@@ -1,1 +1,195 @@
-This is not node-0 ---- 1209689468
+This is not node-0 ---- 1986111909
+Not node-0, joining //localhost:4014/node7 to the DHT.......
+Bootstrap uril in 1986111909 is ---1868668576
+Running initFingerTable for node --- 1868668576
+Node 1986111909 finger table size is 32
+PREDECESSOR FOR 1986111909 is ---1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111911 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986111913 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986111917 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986111925 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986111941 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986111973 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986112037 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986112165 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986112421 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986112933 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986113957 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986116005 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986120101 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986128293 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986144677 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986177445 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986242981 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986374053 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1986636197 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1987160485 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1988209061 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1990306213 ----true
+Inside isInRangeIncEnd1986111909   1868668576    1994500517 ----true
+Inside isInRangeIncEnd1986111909   1868668576    2002889125 ----true
+Inside isInRangeIncEnd1986111909   1868668576    2019666341 ----true
+Inside isInRangeIncEnd1986111909   1868668576    2053220773 ----true
+Inside isInRangeIncEnd1986111909   1868668576    2120329637 ----true
+Inside isInRangeIncEnd1986111909   1868668576    107063717 ----true
+Inside isInRangeIncEnd1986111909   1868668576    375499173 ----true
+Inside isInRangeIncEnd1986111909   1868668576    912370085 ----true
+Completed initfingerTable for 1986111909predecessor is ---1969334290sucessor is ---1868668576
+1986111909 ------ updating others finger tables
+Inside isInRangeIncEnd1986111909   1868668576    1986111909 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111909 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111909 ----false
+Inside isInRangeIncEnd1969334290   1868668576    1986111909 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  1 is -----1986111909 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111908 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111908 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111908 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111908 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  2 is -----1986111908 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111906 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111906 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111906 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111906 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  4 is -----1986111906 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111902 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111902 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111902 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111902 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  8 is -----1986111902 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111894 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111894 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111894 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111894 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  16 is -----1986111894 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111878 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111878 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111878 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111878 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  32 is -----1986111878 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111846 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111846 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111846 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111846 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  64 is -----1986111846 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111782 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111782 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111782 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111782 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  128 is -----1986111782 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111654 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111654 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111654 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111654 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  256 is -----1986111654 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986111398 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986111398 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986111398 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986111398 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  512 is -----1986111398 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986110886 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986110886 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986110886 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986110886 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  1024 is -----1986110886 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986109862 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986109862 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986109862 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986109862 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  2048 is -----1986109862 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986107814 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986107814 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986107814 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986107814 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  4096 is -----1986107814 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986103718 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986103718 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986103718 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986103718 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  8192 is -----1986103718 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986095526 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986095526 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986095526 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986095526 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  16384 is -----1986095526 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986079142 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986079142 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986079142 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986079142 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  32768 is -----1986079142 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1986046374 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1986046374 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1986046374 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1986046374 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  65536 is -----1986046374 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1985980838 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1985980838 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1985980838 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1985980838 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  131072 is -----1985980838 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1985849766 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1985849766 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1985849766 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1985849766 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  262144 is -----1985849766 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1985587622 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1985587622 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1985587622 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1985587622 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  524288 is -----1985587622 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1985063334 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1985063334 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1985063334 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1985063334 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  1048576 is -----1985063334 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1984014758 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1984014758 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1984014758 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1984014758 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  2097152 is -----1984014758 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1981917606 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1981917606 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1981917606 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1981917606 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  4194304 is -----1981917606 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1977723302 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1977723302 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1977723302 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1977723302 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  8388608 is -----1977723302 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1969334694 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1969334694 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1969334694 ----false
+Inside isInRangeIncEnd1969334290   1986111909    1969334694 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  16777216 is -----1969334694 whihch is ----1969334290
+Inside isInRangeIncEnd1986111909   1868668576    1952557478 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1952557478 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1952557478 ----false
+Inside isInRangeIncEnd1952556671   1969334290    1952557478 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  33554432 is -----1952557478 whihch is ----1952556671
+Inside isInRangeIncEnd1986111909   1868668576    1919003046 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1919003046 ----false
+Inside isInRangeIncEnd1902223814   1919001433    1919003046 ----false
+Inside isInRangeIncEnd1919001433   1935779052    1919003046 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  67108864 is -----1919003046 whihch is ----1919001433
+Inside isInRangeIncEnd1986111909   1868668576    1851894182 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  134217728 is -----1851894182 whihch is ----1986111909
+Updating finger table for ---- 1986111909----- called by 1986111909
+Inside isInRangeIncStart2120329637   1868668576    1986111909 ----false
+Finished updating finger table for ---- 1986111909in updateFingerTable
+Inside isInRangeIncEnd1986111909   1868668576    1717676454 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  268435456 is -----1717676454 whihch is ----1986111909
+Updating finger table for ---- 1986111909----- called by 1986111909
+Inside isInRangeIncStart107063717   1868668576    1986111909 ----false
+Finished updating finger table for ---- 1986111909in updateFingerTable
+Inside isInRangeIncEnd1986111909   1868668576    1449240998 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  536870912 is -----1449240998 whihch is ----1986111909
+Updating finger table for ---- 1986111909----- called by 1986111909
+Inside isInRangeIncStart375499173   1868668576    1986111909 ----false
+Finished updating finger table for ---- 1986111909in updateFingerTable
+Inside isInRangeIncEnd1986111909   1868668576    912370086 ----true
+1986111909 ------ is updating pred of mod of -- 1986111909  1073741824 is -----912370086 whihch is ----1986111909
+Updating finger table for ---- 1986111909----- called by 1986111909
+Inside isInRangeIncStart912370085   1868668576    1986111909 ----false
+Finished updating finger table for ---- 1986111909in updateFingerTable
+Joined successfully!!!
+Join was successful! --- Releasing lock

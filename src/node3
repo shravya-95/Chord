@@ -1,1 +1,173 @@
-This is not node-0 ---- 1243244706
+This is not node-0 ---- 1902223814
+Not node-0, joining //localhost:4014/node2 to the DHT.......
+Bootstrap uril in 1902223814 is ---1868668576
+Running initFingerTable for node --- 1868668576
+Node 1902223814 finger table size is 32
+PREDECESSOR FOR 1902223814 is ---1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223816 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223818 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223822 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223830 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223846 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223878 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902223942 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902224070 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902224326 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902224838 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902225862 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902227910 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902232006 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902240198 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902256582 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902289350 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902354886 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902485958 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1902748102 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1903272390 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1904320966 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1906418118 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1910612422 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1919001030 ----true
+Inside isInRangeIncEnd1902223814   1919001433    1935778246 ----false
+finger.get(i+1).node is 1902223814
+Inside isInRangeIncEnd1902223814   1935779052    1969332678 ----false
+finger.get(i+1).node is 1902223814
+Inside isInRangeIncEnd1902223814   1868668576    2036441542 ----true
+Inside isInRangeIncEnd1902223814   1868668576    23175622 ----true
+Inside isInRangeIncEnd1902223814   1868668576    291611078 ----true
+Inside isInRangeIncEnd1902223814   1868668576    828481990 ----true
+Completed initfingerTable for 1902223814predecessor is ---1885446195sucessor is ---1919001433
+1902223814 ------ updating others finger tables
+Inside isInRangeIncEnd1902223814   1919001433    1902223814 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223814 ----false
+Inside isInRangeIncEnd1885446195   1919001433    1902223814 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  1 is -----1902223814 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223813 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223813 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223813 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  2 is -----1902223813 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223811 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223811 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223811 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  4 is -----1902223811 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223807 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223807 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223807 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  8 is -----1902223807 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223799 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223799 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223799 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  16 is -----1902223799 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223783 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223783 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223783 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  32 is -----1902223783 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223751 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223751 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223751 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  64 is -----1902223751 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223687 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223687 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223687 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  128 is -----1902223687 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223559 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223559 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223559 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  256 is -----1902223559 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902223303 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902223303 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902223303 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  512 is -----1902223303 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902222791 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902222791 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902222791 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  1024 is -----1902222791 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902221767 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902221767 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902221767 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  2048 is -----1902221767 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902219719 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902219719 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902219719 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  4096 is -----1902219719 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902215623 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902215623 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902215623 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  8192 is -----1902215623 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902207431 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902207431 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902207431 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  16384 is -----1902207431 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902191047 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902191047 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902191047 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  32768 is -----1902191047 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902158279 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902158279 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902158279 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  65536 is -----1902158279 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1902092743 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1902092743 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1902092743 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  131072 is -----1902092743 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1901961671 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1901961671 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1901961671 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  262144 is -----1901961671 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1901699527 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1901699527 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1901699527 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  524288 is -----1901699527 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1901175239 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1901175239 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1901175239 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  1048576 is -----1901175239 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1900126663 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1900126663 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1900126663 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  2097152 is -----1900126663 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1898029511 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1898029511 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1898029511 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  4194304 is -----1898029511 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1893835207 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1893835207 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1893835207 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  8388608 is -----1893835207 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1885446599 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1885446599 ----false
+Inside isInRangeIncEnd1885446195   1902223814    1885446599 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  16777216 is -----1885446599 whihch is ----1885446195
+Inside isInRangeIncEnd1902223814   1919001433    1868669383 ----false
+Inside isInRangeIncEnd1868668576   1885446195    1868669383 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  33554432 is -----1868669383 whihch is ----1868668576
+Inside isInRangeIncEnd1902223814   1919001433    1835114951 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1835114951 ----false
+Inside isInRangeIncEnd1952556671   1868668576    1835114951 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  67108864 is -----1835114951 whihch is ----1952556671
+Inside isInRangeIncEnd1902223814   1919001433    1768006087 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1768006087 ----false
+Inside isInRangeIncEnd1952556671   1868668576    1768006087 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  134217728 is -----1768006087 whihch is ----1952556671
+Inside isInRangeIncEnd1902223814   1919001433    1633788359 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1633788359 ----false
+Inside isInRangeIncEnd1952556671   1868668576    1633788359 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  268435456 is -----1633788359 whihch is ----1952556671
+Inside isInRangeIncEnd1902223814   1919001433    1365352903 ----false
+Inside isInRangeIncEnd1935779052   1952556671    1365352903 ----false
+Inside isInRangeIncEnd1952556671   1868668576    1365352903 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  536870912 is -----1365352903 whihch is ----1952556671
+Inside isInRangeIncEnd1902223814   1919001433    828481991 ----false
+Inside isInRangeIncEnd1935779052   1952556671    828481991 ----false
+Inside isInRangeIncEnd1952556671   1868668576    828481991 ----true
+1902223814 ------ is updating pred of mod of -- 1902223814  1073741824 is -----828481991 whihch is ----1952556671
+Joined successfully!!!
+Join was successful! --- Releasing lock
+Updating finger table for ---- 1902223814----- called by 1969334290
+Inside isInRangeIncStart1969332678   1868668576    1969334290 ----true
+UPDATING FINGER TABLE OF 1902223814 finger(27) node is 1969334290
+Predecessor of 1902223814 is 1885446195
+Finished updating finger table for ---- 1902223814in updateFingerTable
+Updating finger table for ---- 1902223814----- called by 1986111909
+Inside isInRangeIncStart1969332678   1969334290    1986111909 ----false
+Finished updating finger table for ---- 1902223814in updateFingerTable

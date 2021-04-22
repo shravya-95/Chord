@@ -1,3 +1,3 @@
 node:
 	javac NodeImpl.java
-	java -Djava.security.policy=mySecurityPolicyfile NodeImpl > a &
+	java -Djava.security.policy=mySecurityPolicyfile NodeImpl 4014 > a &

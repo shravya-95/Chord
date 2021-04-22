@@ -1,6 +1,6 @@
 dictionary:
 	javac DictionaryLoader.java
-	java -Djava.security.policy=mySecurityPolicyfile DictionaryLoader localhost:1099/node0 sample-dictionary-file.txt
+	java -Djava.security.policy=mySecurityPolicyfile DictionaryLoader localhost:4014/node0 sample-dictionary-file.txt
 client:
 	javac Client.java
-	java -Djava.security.policy=mySecurityPolicyfile Client localhost:1099/node0
+	
