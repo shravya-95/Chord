@@ -271,16 +271,21 @@ public class NodeImpl implements Node{
         return word+" not found";
     }
 
-    public void printFingerTable() throws RemoteException {
-        System.out.println("THE PRED AND SUC FOR "+this.nodeUrl+"is ----"+this.predecessor+"---"+this.successor);
+    public void printFingerTable() throws RemoteException, MalformedURLException, NotBoundException {
+        String fingerTable="Finger Table: \n";
         for (Finger a:finger){
-            System.out.println("Finger start --- "+a.start+"---- Finger node"+a.node);
+            Node fingerNode = (Node)Naming.lookup(a.node);
+            fingerTable+=a.start + ", "+fingerNode.getNodeId()+", "+fingerNode.getFullUrl();
         }
     }
 
     public String printDictionary() throws RemoteException {
-
-        return null;
+        String dictContent="";
+        for(String key: this.dictionary.keySet()){
+            dictContent+=key+": "+this.dictionary.get(key);
+        }
+        writeToLog("Dictionary content :\n"+dictContent);
+        return dictContent;
     }
 
     @Override
