@@ -24,7 +24,7 @@ public class Client{
                 System.out.println("Enter your word: ");
                 String word = in.next();//Assuming no space in word
                 int wordHash = FNV1aHash.hash32(word);//assuming this returns correct without
-                String successorUrl = node.findSuccessor(wordHash, false);
+                String successorUrl = node.findSuccessor(wordHash, true);
                 Node successor = (Node) Naming.lookup(successorUrl);
                 String meaning = successor.lookup(word);
                 System.out.println("Result: " + meaning);

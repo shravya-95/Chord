@@ -29,7 +29,7 @@ public class NodeImpl implements Node{
     public String fullUrl;
     public List<Integer> nodeList = new ArrayList<>();
     public int bootstrapHashValue=0;
-    public String logfile = this.fullUrl+"_logfile.txt";
+    public String logfile = "";
 
     /**
      *
@@ -43,6 +43,7 @@ public class NodeImpl implements Node{
         this.fullUrl = fullUrl;
         this.id = id;
         this.bootstrapHashValue = bootstrapHashValue;
+        this.logfile=this.fullUrl.substring(this.fullUrl.indexOf("node"))+"_logfile";
         createFingerTable();
     }
 
@@ -451,24 +452,18 @@ public class NodeImpl implements Node{
         Registry registry = null;
         String url;
         int port;
-        if ( args.length ==2 ) {
+        if ( args.length ==1 ){
+            port=Integer.parseInt(args[0]);
+            url="localhost";
+            registry = LocateRegistry.getRegistry(port);
+        }
+        else if ( args.length ==2 ) {
             //if you send 2 arguments, uses them for registry to check node0 and for creating new node.
             url=args[0];
             port=Integer.parseInt(args[1]);
             registry = LocateRegistry.getRegistry(url,port);
         }
-        else if ( args.length ==3){
-            //if you send 2 arguments, uses args[0] and args[1] as url and port for registry to check node0 and args[1] and args[2] as url and port for creating new node.
-            url=args[2];
-            port=Integer.parseInt(args[1]);
-            registry = LocateRegistry.getRegistry(args[0],port);
-        }
-        else if ( args.length ==4){
-            //if you send 2 arguments, uses args[0] and args[1] as url and port for registry to check node0 and args[2] and args[3] as url and port for creating new node.
-            url=args[2];
-            port=Integer.parseInt(args[3]);
-            registry = LocateRegistry.getRegistry(args[0],Integer.parseInt(args[1]));
-        }
+
         else {
             //if you send no arguments, uses the default arguments for creating new node and for registry to check node0
             url = "localhost";
