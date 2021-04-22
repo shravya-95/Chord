@@ -222,6 +222,7 @@ public class NodeImpl implements Node{
     }
 
     public void printFingerTable() throws RemoteException {
+        System.out.println("THE PRED AND SUC FOR "+this.nodeUrl+"is ----"+this.predecessor+"---"+this.successor);
         for (Finger a:finger){
             System.out.println("Finger start --- "+a.start+"---- Finger node"+a.node);
         }
