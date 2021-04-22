@@ -2,7 +2,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -451,7 +453,7 @@ public class NodeImpl implements Node{
 
 
 
-    public static void main(String[] args) throws RemoteException, AlreadyBoundException, MalformedURLException {
+    public static void main(String[] args) throws RemoteException, AlreadyBoundException, MalformedURLException, UnknownHostException {
         System.setSecurityManager (new SecurityManager ());
         Registry registry = null;
         String url;
@@ -485,6 +487,7 @@ public class NodeImpl implements Node{
             System.out.println("This is not node-0 ---- "+ Integer.toString(hashUrl));
             if (node0.joinLock(nodeUrl)) {
                 NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl), hashUrl, nodeUrl,bootstrapHash,registry);
+                System.setProperty("java.rmi.server.hostname",  InetAddress.getLocalHost().getHostName()  );
                 Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
                 registry.bind(Integer.toString(hashUrl), nodeStub);
                 boolean res = newNode.join(bootstrapHash);
@@ -502,6 +505,7 @@ public class NodeImpl implements Node{
             int hashUrl =FNV1aHash.hash32(nodeUrl);
             System.out.println("This is node-0 ---"+Integer.toString(hashUrl));
             NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl),hashUrl,nodeUrl,Integer.toString(hashUrl), registry);
+            System.setProperty("java.rmi.server.hostname",  InetAddress.getLocalHost().getHostName()  );
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
             registry.bind(Integer.toString(hashUrl),nodeStub);
             boolean res = newNode.join(null);
