@@ -41,6 +41,19 @@ Instructions to run:
 
 -----------------
 
+Does it compile? 
+Yes
+Does it run? 
+Yes
+Did node join work correctly? 
+Yes
+Do inset and lookup work correctly? 
+Yes
+Did DictionaryLoading work correctly? 
+Yes
+Clearly state here which functionalities which work or do not work. List any known bugs in your code.
+We are facing issues while testing with a non-default rmi port. It works perfectly without giving a custom port.
+
 Names of the logfiles will be <url>_logfile. eg: node0_logfile
 
 
