@@ -264,12 +264,10 @@ public class NodeImpl implements Node{
 
     }
 
-    @Override
     public void addToNodeList(int id) throws RemoteException {
         this.nodeList.add(id);
     }
 
-    @Override
     public String getPredecessorOf(int id) throws RemoteException {
         if (id==0)
             return ("node"+this.nodeList.get(this.nodeList.size()-1));
@@ -295,13 +293,12 @@ public class NodeImpl implements Node{
         int fingerId = fingerIdNode.getNodeId();
         System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
 //        && this.id!=s_id
-        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) && this.id!=s_id ){
+        if (isInRangeIncStart(finger.get(i).start,fingerId,s_id) ){
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
             Node p = (Node) Naming.lookup(pUrl);
             p.updateFingerTable(nodeURL,i);
-            this.successor=finger.get(1).node;
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
         printFingerTable();
