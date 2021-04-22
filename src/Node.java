@@ -18,7 +18,7 @@ public interface Node extends Remote {
 //    public boolean joinFinished (String nodeURL) throws RemoteException;
     public boolean insert (String word, String definition) throws RemoteException;
     public String  lookup (String word) throws RemoteException;
-    public void  printFingerTable() throws RemoteException;
+    public void  printFingerTable() throws RemoteException, MalformedURLException, NotBoundException;
     public List<Finger> getFingerTable() throws RemoteException;
     public int getEntriesCount() throws RemoteException;
 
