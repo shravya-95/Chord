@@ -18,7 +18,7 @@ public class DictionaryLoader {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         while ((line = br.readLine()) != null) {
-            String[] wordMeaning = line.split(" ");
+            String[] wordMeaning = line.split(":");
             int wordHash = FNV1aHash.hash32(wordMeaning[0]);
             String wordNodeUrl = node.findSuccessor(wordHash, false); //check
             Node wordNode = (Node) Naming.lookup(wordNodeUrl);
