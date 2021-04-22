@@ -195,7 +195,8 @@ public class NodeImpl implements Node{
     public boolean join (String nodeURL) throws RemoteException{
         try {
             if (nodeURL!=null){
-                System.out.println("Not node-0, joining "+this.nodeUrl+" to the DHT.......");
+                System.out.println("Not node-0, joining "+this.fullUrl+" to the DHT.......");
+                writeToLog("Not node-0, joining "+this.fullUrl+" to the DHT.......");
                 //RMI object for node URL
                 Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
                 node0.addToNodeList(this.id);
@@ -206,6 +207,7 @@ public class NodeImpl implements Node{
             }
             else{
                 System.out.println("Node-0 joining to the DHT......."+this.id);
+                writeToLog("Not node-0, joining "+this.fullUrl+" to the DHT.......");
                 predecessor = this.nodeUrl;
                 successor=this.nodeUrl;
                 this.nodeList.add(this.bootstrapHashValue);
@@ -248,17 +250,7 @@ public class NodeImpl implements Node{
         lockToJoin.lock();
         return true;
     }
-//    public boolean joinFinished(String nodeURL) throws RemoteException {
-//        try{
-//            lock.unlock();
-//            return true;
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//            return false;
-//        }
 
-//    }
 
     public boolean insert(String word, String definition) throws RemoteException {
         this.dictionary.put(word, definition);
@@ -305,7 +297,7 @@ public class NodeImpl implements Node{
 //            System.out.println("Calling  findPredecessor from node"+this.nodeUrl+" for node key --- " + modOf31(this.id - (int) Math.pow(2,i-1) + 1) +"in updateOthers");
 //            System.out.println(this.nodeUrl+" ------ is updating pred of "+ modOf31(this.id - (int) Math.pow(2,i-1) + 1));
 
-            String pURL = findPredecessor(modOf31(this.id, 1 - (int) Math.pow(2,i-1)));
+            String pURL = findPredecessor(modOf31(this.id, 1 - (int) Math.pow(2,i-1)), false);
             System.out.println(this.nodeUrl+" ------ is updating pred of mod of -- "+this.id+"  "+(int) Math.pow(2,i-1)+" is -----"+ modOf31(this.id , 1 - (int) Math.pow(2,i-1))+" whihch is ----"+pURL);
 //            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
             Node p = (Node) Naming.lookup(pURL);
@@ -390,7 +382,7 @@ public class NodeImpl implements Node{
     public String findSuccessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
         if (traceFlag) writeToLog("Running FINDSUCCESSOR for key --- " + key + "in node ID ----"+this.fullUrl);
         if (traceFlag) writeToLog("Calling  findPredecessor from node --- "+this.fullUrl+" for node key --- " + key +"within findSuccessor");
-        String node = findPredecessor(key);
+        String node = findPredecessor(key, traceFlag);
         if (traceFlag) writeToLog("The predecessor for ---"+ key+"--- is ---" + node);
         Node nodePred = (Node) Naming.lookup(node);
         if (traceFlag) writeToLog("The successor for ---"+ key+"--- is ---" + nodePred.successor());
@@ -398,8 +390,8 @@ public class NodeImpl implements Node{
     }
 
 
-    public String  findPredecessor (int key) throws RemoteException, MalformedURLException, NotBoundException {
-        System.out.println("Running FINDPREDECESSOR in node " + this.fullUrl+ "for key --- " + key);
+    public String  findPredecessor (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
+        if (traceFlag) writeToLog("Running FINDPREDECESSOR in node " + this.fullUrl+ "for key --- " + key);
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
         //Add RMI objects node from nodeURL and
@@ -408,32 +400,32 @@ public class NodeImpl implements Node{
         Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
 //        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
         while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
-            System.out.println("In FINDPREDECESSOR not found -----"+key+" in range("+node.getNodeId()+","+nodeSuccessor.getNodeId()+"]");
+            if (traceFlag) writeToLog("In FINDPREDECESSOR not found -----"+key+" in range("+node.getNodeId()+","+nodeSuccessor.getNodeId()+"]");
             //Add RMI object node from nodeURL (update below)
-            nodeURL = node.closestPrecedingFinger(key);
+            nodeURL = node.closestPrecedingFinger(key, traceFlag);
             node = (Node) Naming.lookup(nodeURL);
 
             nodeSuccessorURL = node.successor();
             nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
-            System.out.println("End loop --- now node is "+nodeURL+"--- and node successor is  "+nodeSuccessorURL);
+//            writeToLog("End loop --- now node is "+nodeURL+"--- and node successor is  "+nodeSuccessorURL);
         }
-        System.out.println("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
+        if (traceFlag) writeToLog("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
 
         return nodeURL;
     }
 
 
-    public String  closestPrecedingFinger (int key) throws RemoteException, MalformedURLException, NotBoundException {
-        System.out.println("Finding  closestPrecedingFinger in node ---"+this.nodeUrl+" for key --- "+key);
+    public String  closestPrecedingFinger (int key, boolean traceFlag) throws RemoteException, MalformedURLException, NotBoundException {
+        if (traceFlag) writeToLog("Finding  closestPrecedingFinger in node ---"+this.nodeUrl+" for key --- "+key);
         for (int i =m;i>0;i--){
             //Add RMI object fingerNodei from finger.get(i).node
             Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
             if(isInRange(this.id,key,fingerNodei.getNodeId())){
-                System.out.println("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+finger.get(i).node);
+                if (traceFlag) writeToLog("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+finger.get(i).node);
                 return finger.get(i).node;
             }
         }
-        System.out.println("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+this.nodeUrl);
+        if (traceFlag) writeToLog("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+this.nodeUrl);
         return this.nodeUrl;
     }
 
