@@ -28,8 +28,9 @@ public class NodeImpl implements Node{
     public HashMap<String,String> dictionary = new HashMap<>();
     public String fullUrl;
     public List<Integer> nodeList = new ArrayList<>();
-    public int bootstrapHashValue=0;
+    public String bootstrapHashValue=null;
     public String logfile = "";
+    public Registry registry =null;
 
     /**
      *
@@ -38,13 +39,15 @@ public class NodeImpl implements Node{
      * @param fullUrl node url without hashing
      * @param bootstrapHashValue node0's hashed value
      */
-    public NodeImpl(String nodeURL, int id, String fullUrl, int bootstrapHashValue){
+    public NodeImpl(String nodeURL, int id, String fullUrl, String bootstrapHashValue, Registry registry){
         this.nodeUrl=nodeURL;
         this.fullUrl = fullUrl;
         this.id = id;
         this.bootstrapHashValue = bootstrapHashValue;
+        this.registry=registry;
         this.logfile=this.fullUrl.substring(this.fullUrl.indexOf("node"))+"_logfile";
         createFingerTable();
+
     }
 
 
@@ -144,14 +147,14 @@ public class NodeImpl implements Node{
 
     public String printStructure() throws RemoteException, NotBoundException, MalformedURLException {
 //        Registry registry = LocateRegistry.getRegistry();
-        Node node0 = (Node)Naming.lookup(Integer.toString(this.bootstrapHashValue));
+        Node node0 = (Node) registry.lookup(this.bootstrapHashValue);
         List<Integer> currNodeList = node0.getNodeList();
         int numNodes = node0.getCounter();//check if it needs -1
         String structure = "";
         for(int i=0;i<this.nodeList.size();i++){
-            Node currentNode = (Node)Naming.lookup(Integer.toString(nodeList.get(i)));
-            Node successorNode = (Node)Naming.lookup(currentNode.successor());
-            Node predecessorNode = (Node)Naming.lookup(currentNode.predecessor());
+            Node currentNode = (Node)registry.lookup(Integer.toString(nodeList.get(i)));
+            Node successorNode = (Node)registry.lookup(currentNode.successor());
+            Node predecessorNode = (Node)registry.lookup(currentNode.predecessor());
 
             structure += "For NODE ID: "+currentNode.getNodeUrl()+"\n-----------------------\n   Key: "+currentNode.getNodeId();
             structure += "\n   Successor: "+successorNode.getFullUrl()+"\n   Predecessor: "+predecessorNode.getFullUrl();
@@ -200,10 +203,11 @@ public class NodeImpl implements Node{
                 System.out.println("Not node-0, joining "+this.fullUrl+" to the DHT.......");
                 writeToLog("Not node-0, joining "+this.fullUrl+" to the DHT.......");
                 //RMI object for node URL
-                Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
+                System.out.println("Bootstrap uril in "+this.nodeUrl+" is ---"+this.bootstrapHashValue);
+                Node node0 = (Node) registry.lookup(this.bootstrapHashValue);
                 node0.addToNodeList(this.id);
 
-                initFingerTable(nodeURL);
+                initFingerTable(this.bootstrapHashValue);
                 updateOthers();
                 //move keys in (predecessor,n] from successor
             }
@@ -212,7 +216,7 @@ public class NodeImpl implements Node{
                 writeToLog("Not node-0, joining "+this.fullUrl+" to the DHT.......");
                 predecessor = this.nodeUrl;
                 successor=this.nodeUrl;
-                this.nodeList.add(this.bootstrapHashValue);
+                this.nodeList.add(this.id);
             }
             System.out.println("Joined successfully!!!");
             return true;
@@ -270,7 +274,7 @@ public class NodeImpl implements Node{
         for (Finger a:finger){
             if (a.node==null)
                 continue;
-            Node fingerNode = (Node)Naming.lookup(a.node);
+            Node fingerNode = (Node)registry.lookup(a.node);
             fingerTable+=a.start + ", "+fingerNode.getNodeId()+", "+fingerNode.getFullUrl();
         }
     }
@@ -304,7 +308,7 @@ public class NodeImpl implements Node{
             String pURL = findPredecessor(modOf31(this.id, 1 - (int) Math.pow(2,i-1)), false);
             System.out.println(this.nodeUrl+" ------ is updating pred of mod of -- "+this.id+"  "+(int) Math.pow(2,i-1)+" is -----"+ modOf31(this.id , 1 - (int) Math.pow(2,i-1))+" whihch is ----"+pURL);
 //            String pURL = findPredecessor(modOf31(this.id - (int) Math.pow(2,i-1) + 1));
-            Node p = (Node) Naming.lookup(pURL);
+            Node p = (Node) registry.lookup(pURL);
 
             p.updateFingerTable(this.nodeUrl,i);
         }
@@ -332,13 +336,13 @@ public class NodeImpl implements Node{
     }
 
     public void updateFingerTable(String nodeURL, int i) throws RemoteException, NotBoundException, MalformedURLException {
-        Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
+        Node node0 = (Node) registry.lookup(this.bootstrapHashValue);
         this.predecessor = node0.getPredecessorOf(this.id);
         this.successor = node0.getSuccessorOf(this.id);
         System.out.println("Updating finger table for ---- "+ this.nodeUrl+"----- called by "+nodeURL);
-        Node node = (Node) Naming.lookup(nodeURL);
+        Node node = (Node) registry.lookup(nodeURL);
         String fingerIdUrl = finger.get(i).node;
-        Node fingerIdNode = (Node) Naming.lookup(fingerIdUrl);
+        Node fingerIdNode = (Node) registry.lookup(fingerIdUrl);
         int s_id = node.getNodeId();
         int fingerId = fingerIdNode.getNodeId();
 //        System.out.println("Calling  isInRangeIncStart for ---- "+ finger.get(i).start +"    "+ fingerId +"    "+s_id);
@@ -348,7 +352,7 @@ public class NodeImpl implements Node{
             finger.get(i).node=nodeURL;
             System.out.println("Predecessor of "+this.nodeUrl+" is "+this.predecessor);
             String pUrl = this.predecessor;
-            Node p = (Node) Naming.lookup(pUrl);
+            Node p = (Node) registry.lookup(pUrl);
             p.updateFingerTable(nodeURL,i);
         }
         System.out.println("Finished updating finger table for ---- "+ this.nodeUrl + "in updateFingerTable");
@@ -358,17 +362,17 @@ public class NodeImpl implements Node{
 
     public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Running initFingerTable for node --- " + nodeURL);
-        Node node0 = (Node) Naming.lookup(Integer.toString(this.bootstrapHashValue));
+        Node node0 = (Node) registry.lookup(this.bootstrapHashValue);
         System.out.println("Node "+this.nodeUrl+" finger table size is "+finger.size());
         finger.get(1).node = node0.findSuccessor(finger.get(1).start, false);
         this.successor = finger.get(1).node;
-        Node nodeSuccessor = (Node) Naming.lookup(this.successor);
+        Node nodeSuccessor = (Node) registry.lookup(this.successor);
         this.predecessor=nodeSuccessor.predecessor();
         System.out.println("PREDECESSOR FOR "+this.nodeUrl+" is ---"+this.predecessor);
 //        this.successor.predecessor=this;
         nodeSuccessor.setPredecessor(this.nodeUrl);
         for(int i =1;i<=m-1;i++){
-            Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
+            Node fingerNodei = (Node) registry.lookup(finger.get(i).node);
             if (isInRangeIncEnd(this.id,fingerNodei.getNodeId(),finger.get(i+1).start)){
                 finger.get(i+1).node=finger.get(i).node;
 
@@ -388,7 +392,7 @@ public class NodeImpl implements Node{
         if (traceFlag) writeToLog("Calling  findPredecessor from node --- "+this.fullUrl+" for node key --- " + key +"within findSuccessor");
         String node = findPredecessor(key, traceFlag);
         if (traceFlag) writeToLog("The predecessor for ---"+ key+"--- is ---" + node);
-        Node nodePred = (Node) Naming.lookup(node);
+        Node nodePred = (Node) registry.lookup(node);
         if (traceFlag) writeToLog("The successor for ---"+ key+"--- is ---" + nodePred.successor());
         return nodePred.successor();
     }
@@ -399,18 +403,18 @@ public class NodeImpl implements Node{
         String nodeURL = this.nodeUrl;
         String nodeSuccessorURL = this.successor;
         //Add RMI objects node from nodeURL and
-        Node node = (Node) Naming.lookup(nodeURL);
+        Node node = (Node) registry.lookup(nodeURL);
         // Add RMI object nodeSuccessor from nodeSuccessorURL
-        Node nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
+        Node nodeSuccessor = (Node) registry.lookup(nodeSuccessorURL);
 //        System.out.println("calling rangeIncEnd with params: "+node.getNodeId()+", "+nodeSuccessor.getNodeId()+","+key);
         while (!isInRangeIncEnd(node.getNodeId(),nodeSuccessor.getNodeId(),key)){
             if (traceFlag) writeToLog("In FINDPREDECESSOR not found -----"+key+" in range("+node.getNodeId()+","+nodeSuccessor.getNodeId()+"]");
             //Add RMI object node from nodeURL (update below)
             nodeURL = node.closestPrecedingFinger(key, traceFlag);
-            node = (Node) Naming.lookup(nodeURL);
+            node = (Node) registry.lookup(nodeURL);
 
             nodeSuccessorURL = node.successor();
-            nodeSuccessor = (Node) Naming.lookup(nodeSuccessorURL);
+            nodeSuccessor = (Node) registry.lookup(nodeSuccessorURL);
 //            writeToLog("End loop --- now node is "+nodeURL+"--- and node successor is  "+nodeSuccessorURL);
         }
         if (traceFlag) writeToLog("PREDECESSOR for node key --- " + key+" --- is "+nodeURL);
@@ -423,7 +427,7 @@ public class NodeImpl implements Node{
         if (traceFlag) writeToLog("Finding  closestPrecedingFinger in node ---"+this.nodeUrl+" for key --- "+key);
         for (int i =m;i>0;i--){
             //Add RMI object fingerNodei from finger.get(i).node
-            Node fingerNodei = (Node) Naming.lookup(finger.get(i).node);
+            Node fingerNodei = (Node) registry.lookup(finger.get(i).node);
             if(isInRange(this.id,key,fingerNodei.getNodeId())){
                 if (traceFlag) writeToLog("ClosestPrecedingFinger in node ---" + this.nodeUrl + " for key --- " + key +"is ---"+finger.get(i).node);
                 return finger.get(i).node;
@@ -447,7 +451,7 @@ public class NodeImpl implements Node{
 
 
 
-    public static void main(String[] args) throws RemoteException, AlreadyBoundException {
+    public static void main(String[] args) throws RemoteException, AlreadyBoundException, MalformedURLException {
         System.setSecurityManager (new SecurityManager ());
         Registry registry = null;
         String url;
@@ -473,17 +477,17 @@ public class NodeImpl implements Node{
         int nodeId;
         try{
             String node0Url = "//"+url+":"+port+"/node0";
-            int bootstrapHash = FNV1aHash.hash32(node0Url);
-            Node node0 = (Node)registry.lookup(Integer.toString(bootstrapHash));
+            String bootstrapHash = Integer.toString(FNV1aHash.hash32(node0Url));
+            Node node0 = (Node) registry.lookup(bootstrapHash);
             nodeId = node0.getCounter();
             String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
             int hashUrl = FNV1aHash.hash32(nodeUrl);
             System.out.println("This is not node-0 ---- "+ Integer.toString(hashUrl));
             if (node0.joinLock(nodeUrl)) {
-                NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl), hashUrl, nodeUrl,bootstrapHash);
-                Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, nodeId);
+                NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl), hashUrl, nodeUrl,bootstrapHash,registry);
+                Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
                 registry.bind(Integer.toString(hashUrl), nodeStub);
-                boolean res = newNode.join(Integer.toString(bootstrapHash));
+                boolean res = newNode.join(bootstrapHash);
                 if (res) {
 //                    node0.joinFinished(nodeUrl);
                     System.out.println("Join was successful! --- Releasing lock");
@@ -494,13 +498,12 @@ public class NodeImpl implements Node{
             }
         } catch (NotBoundException e){
             //node0 not created
-            nodeId =0;
-            String nodeUrl = "//"+url+":"+port+"/node"+nodeId;
+            String nodeUrl = "//"+url+":"+port+"/node"+0;
             int hashUrl =FNV1aHash.hash32(nodeUrl);
             System.out.println("This is node-0 ---"+Integer.toString(hashUrl));
-            NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl),hashUrl,nodeUrl,hashUrl);
+            NodeImpl newNode = new NodeImpl(Integer.toString(hashUrl),hashUrl,nodeUrl,Integer.toString(hashUrl), registry);
             Node nodeStub = (Node) UnicastRemoteObject.exportObject(newNode, 0);
-            registry.bind( Integer.toString(hashUrl),nodeStub);
+            registry.bind(Integer.toString(hashUrl),nodeStub);
             boolean res = newNode.join(null);
             if (res) {
 //                newNode.joinFinished(nodeUrl);

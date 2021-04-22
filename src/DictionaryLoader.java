@@ -13,7 +13,10 @@ public class DictionaryLoader {
         }
         System.setSecurityManager(new SecurityManager());
         String nodeUrl = Integer.toString(FNV1aHash.hash32("//" + args[0]));
-        Node node = (Node) Naming.lookup(nodeUrl);
+        String url = "//"+args[0].split("/")[0]+"/";
+        System.out.println(url);
+        Node node = (Node) Naming.lookup(url+nodeUrl);
+
 
         File file = new File(args[1]);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -22,7 +25,7 @@ public class DictionaryLoader {
             String[] wordMeaning = line.split(":");
             int wordHash = FNV1aHash.hash32(wordMeaning[0].trim());
             String wordNodeUrl = node.findSuccessor(wordHash, true); //check
-            Node wordNode = (Node) Naming.lookup(wordNodeUrl);
+            Node wordNode = (Node) Naming.lookup(url+wordNodeUrl);
             wordNode.insert(wordMeaning[0].trim(), wordMeaning[1].trim()); //needs to overwrite if same key
         }
     }
