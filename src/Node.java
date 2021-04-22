@@ -27,4 +27,9 @@ public interface Node extends Remote {
 
     void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
 
+    void addToNodeList(int id) throws RemoteException;
+
+    String getPredecessorOf(int id) throws RemoteException;
+
+    String getSuccessorOf(int id) throws RemoteException;
 }
