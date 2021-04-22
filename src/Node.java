@@ -21,6 +21,8 @@ public interface Node extends Remote {
     public void  printFingerTable() throws RemoteException;
     public List<Finger> getFingerTable() throws RemoteException;
     public int getEntriesCount() throws RemoteException;
+
+    public boolean joinLock(String url) throws RemoteException;
     public String  printDictionary() throws RemoteException;
     public void setPredecessor(String nodeUrl) throws RemoteException;
     public void setSuccessor(String nodeUrl) throws RemoteException;
@@ -29,11 +31,11 @@ public interface Node extends Remote {
 
     public void updateFingerTable(String nodeUrl, int i) throws RemoteException, NotBoundException, MalformedURLException;
 
-    void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException;
+    public void initFingerTable(String nodeURL) throws RemoteException, MalformedURLException, NotBoundException;
 
-    void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
+    public void updateOthers() throws RemoteException, MalformedURLException, NotBoundException;
 
-    void addToNodeList(int id) throws RemoteException;
+    public void addToNodeList(int id) throws RemoteException;
 
     public String getPredecessorOf(int id) throws RemoteException;
 
