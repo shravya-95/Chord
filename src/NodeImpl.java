@@ -28,10 +28,10 @@ public class NodeImpl implements Node{
     public List<Integer> nodeList = new ArrayList<>();
 
     public NodeImpl(String nodeURL, int id, String fullUrl){
-        this.id = id;
         this.nodeUrl=nodeURL;
         createFingerTable();
         this.fullUrl = fullUrl;
+        this.id = FNV1aHash.hash32(fullUrl);
     }
 
     public boolean isInRange(int start, int end, int key){
